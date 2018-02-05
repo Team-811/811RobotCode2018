@@ -2,13 +2,14 @@ package org.usfirst.frc.team811.robot.subsystems;
 
 import org.usfirst.frc.team811.robot.Constants;
 import org.usfirst.frc.team811.robot.RobotMap;
+import org.usfirst.frc.team811.robot.commands.Drive.drive_w_joystick;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
@@ -19,15 +20,15 @@ public class Drive extends Subsystem implements Constants {
 
 	Joystick joy1 = RobotMap.joystick1;
 	WPI_TalonSRX frontright = RobotMap.drivefrontright;
+	WPI_TalonSRX backright = RobotMap.drivebackright;
+	SpeedControllerGroup driveRight = RobotMap.driveRight;
 	WPI_TalonSRX frontleft = RobotMap.drivefrontleft;
 	WPI_TalonSRX backleft = RobotMap.drivebackleft;
-	WPI_TalonSRX backright = RobotMap.drivebackright;
+	SpeedControllerGroup driveLeft = RobotMap.driveLeft;
 	DifferentialDrive driveTrain = RobotMap.driveTrain;
-	Encoder driveEncoderLeft = RobotMap.driveEncoder;
-	Encoder driveEncoderLeft = RobotMap.driveEncoder;
-	// AnalogGyro driveGyro = RobotMap.driveGyro;
+	Encoder driveEncoderLeft = RobotMap.driveEncoderLeft;
+	Encoder driveEncoderRight = RobotMap.driveEncoderRight;
 	AHRS ahrs = RobotMap.ahrs;
-	PIDController turnController = RobotMap.turnController;
 
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
@@ -62,7 +63,7 @@ public class Drive extends Subsystem implements Constants {
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
-		setDefaultCommand(new drive_w_joysticks());
+		setDefaultCommand(new drive_w_joystick());
 	}
 
 }
