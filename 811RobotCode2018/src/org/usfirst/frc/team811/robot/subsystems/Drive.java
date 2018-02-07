@@ -2,7 +2,7 @@ package org.usfirst.frc.team811.robot.subsystems;
 
 import org.usfirst.frc.team811.robot.Constants;
 import org.usfirst.frc.team811.robot.RobotMap;
-import org.usfirst.frc.team811.robot.commands.Drive.drive_w_joystick;
+import org.usfirst.frc.team811.robot.commands.drive_w_joystick;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
