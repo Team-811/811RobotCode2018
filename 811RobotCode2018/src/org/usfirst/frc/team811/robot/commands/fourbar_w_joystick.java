@@ -1,18 +1,15 @@
 package org.usfirst.frc.team811.robot.commands;
 
-import org.usfirst.frc.team811.robot.Robot;
-
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class drive_w_joystick extends Command {
+public class fourbar_w_joystick extends Command {
 
-    public drive_w_joystick() {
+    public fourbar_w_joystick() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.drive);
     }
 
     // Called just before this Command runs the first time
@@ -21,7 +18,6 @@ public class drive_w_joystick extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.drive.driveWithJoy();
     }
 
     // Make this return true when this Command no longer needs to run execute()
