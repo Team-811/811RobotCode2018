@@ -39,11 +39,6 @@ public class RobotMap implements Constants {
 	public static WPI_TalonSRX drivebackleft;
 	public static SpeedControllerGroup driveLeft;
 
-	// four bar
-	public static WPI_TalonSRX fourBarLeft;
-	public static WPI_TalonSRX fourBarRight;
-	public static SpeedControllerGroup fourBar;
-	public static PIDController fourBarController;
 
 	// Intake
 	public static DoubleSolenoid gripperPneumatic;
@@ -83,17 +78,6 @@ public class RobotMap implements Constants {
 
 		// Gyro
 		ahrs = new AHRS(SPI.Port.kMXP);
-
-		// Four Bar
-		fourBarLeft = new WPI_TalonSRX(FOURBAR_LEFT_PORT); // TODO
-		fourBarLeft.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 1);
-		fourBarLeft.setSensorPhase(true); /* keep sensor and motor in phase */
-		fourBarLeft.configNeutralDeadband(0.01, 0);
-
-		fourBarRight = new WPI_TalonSRX(FOURBAR_RIGHT_PORT);
-		fourBarRight.configNeutralDeadband(0.01, 0);
-
-		fourBar = new SpeedControllerGroup(fourBarLeft, fourBarRight);
 
 		// Intake
 		gripperPneumatic = new DoubleSolenoid(OPEN_PORT, CLOSE_PORT); // TODO

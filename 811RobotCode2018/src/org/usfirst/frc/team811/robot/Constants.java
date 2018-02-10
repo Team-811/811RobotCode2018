@@ -4,15 +4,19 @@ public interface Constants {
 
 	// Port
 
+	// Can BUS IDs
+	int COMPRESSOR_PORT = 0;
+
 	int FRONT_RIGHT_PORT = 3;
 	int FRONT_LEFT_PORT = 1;
 	int BACK_RIGHT_PORT = 4;
 	int BACK_LEFT_PORT = 2;
 
-	int FOURBAR_LEFT_PORT = 1; // TODO
-	int FOURBAR_RIGHT_PORT = 0;
-
-	int COMPRESSOR_PORT = 0; // TODO
+	int FOURBAR_LEFT_PORT = 5;
+	int FOURBAR_RIGHT_PORT = 6;
+	// end Can Bus Ids
+	
+	// pnuematic controller ports 
 	int OPEN_PORT = 0;
 	int CLOSE_PORT = 1;
 
@@ -31,10 +35,6 @@ public interface Constants {
 	int FOURBAR_CLIMB_POSITION = 0; // TODO
 	int FOURBAR_SWITCH_POSITION = 0; // TODO
 	
-	double kP = 0.03;
-	double kI = 0.00;
-	double kD = 0.00;
-	double kF = 0.00;
 
 	// controls
 
