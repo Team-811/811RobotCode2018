@@ -26,12 +26,11 @@ public interface Constants {
 
 	boolean CAN_SHOOT = false;
 
-	int CLIMBER_UP_POSITION = 500; // TODO
-	int CLIMBER_DOWN_POSITION = 0; // TODO
-	int CLIMBER_FORWARD_LIMIT = 700; // TODO
-	int CLIMBER_REVERSE_LIMIT = 0; // TODO
-	int CLIMBER_DIFFERENCE_VALUE = 20; // TODO
-
+	int FOURBAR_UP_POSITION = 0; // TODO
+	int FOURBAR_DOWN_POSITION = 0; // TODO
+	int FOURBAR_CLIMB_POSITION = 0; // TODO
+	int FOURBAR_SWITCH_POSITION = 0; // TODO
+	
 	double kP = 0.03;
 	double kI = 0.00;
 	double kD = 0.00;
@@ -45,9 +44,14 @@ public interface Constants {
 	int INVERSE_CONTROLS = 6; // TODO
 
 	// operator
-	int INTAKE_IN_BUTTON = 1; // a
-	int INTAKE_OUT_BUTTON = 2; // b
-	int INTAKE_STOP_BUTTON = 7; // back
+	int INTAKE_OPEN_BUTTON = 3; // a
+	int INTAKE_CLOSE_BUTTON = 2; // b
+	//int INTAKE_STOP_BUTTON = 7; // back
+	
+	int FOURBAR_UP_BUTTON = 8;
+	int FOURBAR_DOWN_BUTTON = 6;
+	int FOURBAR_SWITCH_BUTTON = 7;
+	int FOURBAR_CLIMB_BUTTON = 9;
 
 	int CLIMBER_UP_BUTTON = 6;
 	int CLIMBER_DOWN_BUTTON = 5;
