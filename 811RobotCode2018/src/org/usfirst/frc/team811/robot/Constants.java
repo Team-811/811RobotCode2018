@@ -24,24 +24,6 @@ public interface Constants {
 
 	int INTAKE_SPEED = 1; // TODO
 
-	int SHOOTER_SPEED = 1; // TODO
-	double SHOOTER_WAIT_TIME = 50; // TODO
-	double SHOOTER_END_WAIT_TIME = 50; // TODO
-	double SHOOTER_FULL_SPEED_RATE = 20; // TODO
-	double SHOOTER_DISTANCE_PER_PULSE = 260; // TODO
-
-	// Turret Vision Config
-	double tkP = 0.01;
-	double tkI = 0.00;
-	double tkD = 0.4;
-	double tkF = 0.00;
-	double kToleranceDegrees = 1.0f;
-	int framesizeX = 260;
-	int framesizeY = 195;
-	int framethres = 5;
-	double AREA_TO_DISTANCE = 30 / 600; // TODO distance/area
-	double HEIGHT_TO_DISTANCE = 30 / 600; // TODO distance/height
-
 	boolean CAN_SHOOT = false;
 
 	int CLIMBER_UP_POSITION = 500; // TODO

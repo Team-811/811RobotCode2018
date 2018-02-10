@@ -13,6 +13,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -42,6 +43,7 @@ public class RobotMap implements Constants {
 	public static WPI_TalonSRX fourBarLeft;
 	public static WPI_TalonSRX fourBarRight;
 	public static SpeedControllerGroup fourBar;
+	public static PIDController fourBarController;
 
 	// Intake
 	public static DoubleSolenoid gripperPneumatic;
