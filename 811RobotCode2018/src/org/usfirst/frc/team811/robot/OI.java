@@ -7,6 +7,8 @@
 
 package org.usfirst.frc.team811.robot;
 
+import org.usfirst.frc.team811.robot.commands.*;
+
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
@@ -17,13 +19,28 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 public class OI implements Constants { 
 	//// CREATING BUTTONS
 	JoystickButton intake_close;
-	JoystickButton intake_off;
 	JoystickButton intake_open;
-	
+	JoystickButton fourbar_climb;
+	JoystickButton fourbar_down;
+	JoystickButton fourbar_switch;
+	JoystickButton fourbar_up;
 	
 	public OI() {
 		
+		// Operator controller
+		intake_close = new JoystickButton(RobotMap.joystick2, INTAKE_CLOSE_BUTTON);
+		intake_close.whenPressed(new Intake_close());
+		intake_open = new JoystickButton(RobotMap.joystick2, INTAKE_OPEN_BUTTON);
+		intake_open.whenPressed(new Intake_open());
 		
+		fourbar_up = new JoystickButton(RobotMap.joystick2, FOURBAR_UP_BUTTON);
+		fourbar_up.whenPressed(new fourbar_up());
+		fourbar_down = new JoystickButton(RobotMap.joystick2, FOURBAR_DOWN_BUTTON);
+		fourbar_down.whenPressed(new fourbar_down());
+		fourbar_switch = new JoystickButton(RobotMap.joystick2, FOURBAR_SWITCH_BUTTON);
+		fourbar_switch.whenPressed(new fourbar_switch());
+		fourbar_climb = new JoystickButton(RobotMap.joystick2, FOURBAR_CLIMB_BUTTON);
+		fourbar_climb.whenPressed(new fourbar_climb());
 		
 	}
 	
