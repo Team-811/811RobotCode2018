@@ -43,7 +43,11 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-		m_oi = new OI();
+		oi = new OI();
+		drive = new Drive();
+		intake = new Intake();
+		fourBar = new FourBar();
+		climber = new Climber();
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
 	}
