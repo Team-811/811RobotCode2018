@@ -7,7 +7,10 @@
 
 package org.usfirst.frc.team811.robot;
 
+import org.usfirst.frc.team811.robot.subsystems.Climber;
 import org.usfirst.frc.team811.robot.subsystems.Drive;
+import org.usfirst.frc.team811.robot.subsystems.FourBar;
+import org.usfirst.frc.team811.robot.subsystems.Intake;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -27,6 +30,9 @@ public class Robot extends TimedRobot {
 	public static OI oi;
 
 	public static Drive drive;
+	public static Intake intake;
+	public static FourBar fourBar;
+	public static Climber climber;
 
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
