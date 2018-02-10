@@ -7,7 +7,6 @@
 
 package org.usfirst.frc.team811.robot;
 
-import org.usfirst.frc.team811.robot.subsystems.Climber;
 import org.usfirst.frc.team811.robot.subsystems.Drive;
 import org.usfirst.frc.team811.robot.subsystems.FourBar;
 import org.usfirst.frc.team811.robot.subsystems.Intake;
@@ -32,7 +31,6 @@ public class Robot extends TimedRobot {
 	public static Drive drive;
 	public static Intake intake;
 	public static FourBar fourBar;
-	public static Climber climber;
 
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -47,7 +45,6 @@ public class Robot extends TimedRobot {
 		drive = new Drive();
 		intake = new Intake();
 		fourBar = new FourBar();
-		climber = new Climber();
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
 	}
