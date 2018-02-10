@@ -44,12 +44,11 @@ public interface Constants {
 
 	boolean CAN_SHOOT = false;
 
-	int CLIMBER_UP_POSITION = 500; // TODO
-	int CLIMBER_DOWN_POSITION = 0; // TODO
-	int CLIMBER_FORWARD_LIMIT = 700; // TODO
-	int CLIMBER_REVERSE_LIMIT = 0; // TODO
-	int CLIMBER_DIFFERENCE_VALUE = 20; // TODO
-
+	int FOURBAR_UP_POSITION = 0; // TODO
+	int FOURBAR_DOWN_POSITION = 0; // TODO
+	int FOURBAR_CLIMB_POSITION = 0; // TODO
+	int FOURBAR_SWITCH_POSITION = 0; // TODO
+	
 	double kP = 0.03;
 	double kI = 0.00;
 	double kD = 0.00;
