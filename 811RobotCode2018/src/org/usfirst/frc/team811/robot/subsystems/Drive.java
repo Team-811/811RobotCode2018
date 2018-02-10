@@ -7,7 +7,6 @@ import org.usfirst.frc.team811.robot.commands.drive_w_joystick;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -26,8 +25,6 @@ public class Drive extends Subsystem implements Constants {
 	WPI_TalonSRX backleft = RobotMap.drivebackleft;
 	SpeedControllerGroup driveLeft = RobotMap.driveLeft;
 	DifferentialDrive driveTrain = RobotMap.driveTrain;
-	Encoder driveEncoderLeft = RobotMap.driveEncoderLeft;
-	Encoder driveEncoderRight = RobotMap.driveEncoderRight;
 	AHRS ahrs = RobotMap.ahrs;
 
 	// Put methods for controlling this subsystem

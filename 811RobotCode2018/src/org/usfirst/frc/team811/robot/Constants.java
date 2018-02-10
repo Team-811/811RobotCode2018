@@ -9,31 +9,13 @@ public interface Constants {
 	int BACK_RIGHT_PORT = 4;
 	int BACK_LEFT_PORT = 2;
 
-	int DRIVE_ENCODER_PORT_LEFT_1 = 2;
-	int DRIVE_ENCODER_PORT_LEFT_2 = 3;
+	int FOURBAR_LEFT_PORT = 1; // TODO
+	int FOURBAR_RIGHT_PORT = 0;
 
-	int DRIVE_ENCODER_PORT_RIGHT_1 = 3;
-	int DRIVE_ENCODER_PORT_RIGHT_2 = 4;
+	int COMPRESSOR_PORT = 0; // TODO
+	int OPEN_PORT = 0;
+	int CLOSE_PORT = 1;
 
-	int INTAKE_TALON_PORT = 0;
-	int INTAKE_LIMIT_PORT = 6;
-
-	int SHOOTER_TALON_1_PORT = 5;
-	// int SHOOTER_TALON_2_PORT = 6;
-	int SHOOTER_ENCODER_PORT_1 = 0;
-	int SHOOTER_ENCODER_PORT_2 = 1;
-
-	int LIFTER_TALON_PORT = 7;
-	int LIFTER_LIMIT_TOP_PORT = 8;
-	int LIFTER_LIMIT_BOTTOM_PORT = 11;
-
-	int CLIMBER_TALON_1_PORT = 1;
-	int CLIMBER_TALON_2_PORT = 0;
-
-	int SERVO_PORT = 9;
-
-	int LIMIT_CLIMBERTOP_PORT = 9;
-	int LIMIT_CLIMBERBOTTOM_PORT = 5;
 	// variables
 
 	double SPEED_SCALE = 0.85;
@@ -74,13 +56,11 @@ public interface Constants {
 	double kF = 0.00;
 
 	// controls
+
 	// driver
 	int FORWARD_DRIVE_AXIS = 1;
 	int TURN_DRIVE_AXIS = 4;
-	int GYRO_RESET_BUTTON = 1;
-
-	int SERVO_AXIS = 5; // triggers
-	int SERVO_PRESET_BUTTON = 2;
+	int INVERSE_CONTROLS = 6; // TODO
 
 	// operator
 	int INTAKE_IN_BUTTON = 1; // a
