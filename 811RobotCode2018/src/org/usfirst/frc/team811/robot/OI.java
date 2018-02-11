@@ -7,16 +7,23 @@
 
 package org.usfirst.frc.team811.robot;
 
-import org.usfirst.frc.team811.robot.commands.*;
+import org.usfirst.frc.team811.robot.commands.Intake_close;
+import org.usfirst.frc.team811.robot.commands.Intake_open;
+import org.usfirst.frc.team811.robot.commands.fourbar_climb;
+import org.usfirst.frc.team811.robot.commands.fourbar_down;
+import org.usfirst.frc.team811.robot.commands.fourbar_switch;
+import org.usfirst.frc.team811.robot.commands.fourbar_test;
+import org.usfirst.frc.team811.robot.commands.fourbar_up;
 
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 
-public class OI implements Constants { 
+public class OI implements Constants {
 	//// CREATING BUTTONS
 	JoystickButton intake_close;
 	JoystickButton intake_open;
@@ -24,15 +31,15 @@ public class OI implements Constants {
 	JoystickButton fourbar_down;
 	JoystickButton fourbar_switch;
 	JoystickButton fourbar_up;
-	
+
 	public OI() {
-		
+
 		// Operator controller
 		intake_close = new JoystickButton(RobotMap.joystick2, INTAKE_CLOSE_BUTTON);
 		intake_close.whenPressed(new Intake_close());
 		intake_open = new JoystickButton(RobotMap.joystick2, INTAKE_OPEN_BUTTON);
 		intake_open.whenPressed(new Intake_open());
-		
+
 		fourbar_up = new JoystickButton(RobotMap.joystick2, FOURBAR_UP_BUTTON);
 		fourbar_up.whenPressed(new fourbar_up());
 		fourbar_down = new JoystickButton(RobotMap.joystick2, FOURBAR_DOWN_BUTTON);
@@ -41,9 +48,9 @@ public class OI implements Constants {
 		fourbar_switch.whenPressed(new fourbar_switch());
 		fourbar_climb = new JoystickButton(RobotMap.joystick2, FOURBAR_CLIMB_BUTTON);
 		fourbar_climb.whenPressed(new fourbar_climb());
-		
+
+		// Smartdashboard Button
+		SmartDashboard.putData("start four bar motor", new fourbar_test());
 	}
-	
-	
-	
+
 }
