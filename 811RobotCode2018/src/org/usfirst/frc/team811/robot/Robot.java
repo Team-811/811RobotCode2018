@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot implements Constants{
 
 	public static OI oi;
+	public static RobotMap robotMap;
 
 	public static Drive drive;
 	public static Intake intake;
@@ -41,10 +42,15 @@ public class Robot extends TimedRobot implements Constants{
 	 */
 	@Override
 	public void robotInit() {
-		oi = new OI();
+		
+		robotMap = new RobotMap();
+		robotMap.init();
+		
 		drive = new Drive();
 		intake = new Intake();
 		fourBar = new FourBar(FOURBAR_LEFT_PORT, FOURBAR_RIGHT_PORT);
+
+		oi = new OI(); //has to go last
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
 	}

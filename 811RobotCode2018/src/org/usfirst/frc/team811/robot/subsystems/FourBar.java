@@ -67,17 +67,17 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 		leftTalon.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, 1);
 		leftTalon.setSensorPhase(true); /* keep sensor and motor in phase */
 		leftTalon.configNeutralDeadband(0.01, 0);
-		leftTalon.setSelectedSensorPosition(0, 0, 5);
+		//leftTalon.setSelectedSensorPosition(0, 0, 5);
 		
 		rightTalon = new WPI_TalonSRX(rightPort);
 		rightTalon.configNeutralDeadband(0.01, 0);
 		
 		// NOTE: the motors on the fourbar spin in opposite directions
-		invertMotors();
+		//invertMotors();
 
 		talonGroup = new SpeedControllerGroup(leftTalon, rightTalon);
 		
-		setBrakeModeOn(true);
+		//setBrakeModeOn(true);
 		
 		// set park to true before enabling the PID controller for the first time
 		isParking = true;
@@ -88,7 +88,7 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 		fourBarController.setAbsoluteTolerance(kTolerancePx);
 		fourBarController.setContinuous(true);
 		fourBarController.setSetpoint(0.0);
-		fourBarController.enable();
+		//fourBarController.enable();
 	}
 
 	private void setBrakeModeOn(boolean brakeOn)
