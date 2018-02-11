@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * creating this project, you must also update the build.properties file in the
  * project.
  */
-public class Robot extends TimedRobot {
+public class Robot extends TimedRobot implements Constants{
 
 	public static OI oi;
 
@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
 		oi = new OI();
 		drive = new Drive();
 		intake = new Intake();
-		fourBar = new FourBar();
+		fourBar = new FourBar(FOURBAR_LEFT_PORT, FOURBAR_RIGHT_PORT);
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
 	}

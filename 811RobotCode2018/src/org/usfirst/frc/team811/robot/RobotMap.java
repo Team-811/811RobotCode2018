@@ -88,7 +88,6 @@ public class RobotMap implements Constants {
 		gripperPneumatic = new DoubleSolenoid(OPEN_PORT, CLOSE_PORT); // TODO
 		
 		// fourbar
-		fourbarArm = new FourBar(FOURBAR_LEFT_PORT, FOURBAR_RIGHT_PORT);
 
 	}
 }
