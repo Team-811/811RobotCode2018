@@ -5,15 +5,18 @@ public interface Constants {
 	// Port
 
 	// Can BUS IDs
-	int COMPRESSOR_PORT = 0;
+	int COMPRESSOR_PORT = 9;
 
-	int FRONT_RIGHT_PORT = 3;
-	int FRONT_LEFT_PORT = 1;
-	int BACK_RIGHT_PORT = 4;
-	int BACK_LEFT_PORT = 2;
+	int WINCH_PORT = 1;
+	
+	int FRONT_RIGHT_PORT = 6;
+	int BACK_RIGHT_PORT = 7;
 
-	int FOURBAR_LEFT_PORT = 5;
-	int FOURBAR_RIGHT_PORT = 6;
+	int FRONT_LEFT_PORT = 2;
+	int BACK_LEFT_PORT = 3;
+
+	int FOURBAR_LEFT_PORT = 4;
+	int FOURBAR_RIGHT_PORT = 5;
 	// end Can Bus Ids
 	
 	// pnuematic controller ports 
