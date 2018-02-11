@@ -7,6 +7,9 @@
 
 package org.usfirst.frc.team811.robot;
 
+import org.usfirst.frc.team811.robot.commands.fourbar_climb;
+import org.usfirst.frc.team811.robot.subsystems.FourBar;
+
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
@@ -39,7 +42,9 @@ public class RobotMap implements Constants {
 	public static WPI_TalonSRX drivebackleft;
 	public static SpeedControllerGroup driveLeft;
 
-
+	// arm
+	public static FourBar fourbarArm;
+	
 	// Intake
 	public static DoubleSolenoid gripperPneumatic;
 
@@ -81,6 +86,9 @@ public class RobotMap implements Constants {
 
 		// Intake
 		gripperPneumatic = new DoubleSolenoid(OPEN_PORT, CLOSE_PORT); // TODO
+		
+		// fourbar
+		fourbarArm = new FourBar(FOURBAR_LEFT_PORT, FOURBAR_RIGHT_PORT);
 
 	}
 }
