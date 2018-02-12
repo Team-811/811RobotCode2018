@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -56,54 +56,51 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 	private WPI_TalonSRX rightTalon;
 	private SpeedControllerGroup talonGroup;
 	private PIDController fourBarController;
-	
+
 	private boolean isParking = true;
 
 	public FourBar(int leftPort, int rightPort) {
-		
+
 		// left talon will be wired to the sensor
 		// TODO: verify with actual robot
 		leftTalon = new WPI_TalonSRX(leftPort);
 		leftTalon.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, 1);
 		leftTalon.setSensorPhase(true); /* keep sensor and motor in phase */
 		leftTalon.configNeutralDeadband(0.01, 0);
-		//leftTalon.setSelectedSensorPosition(0, 0, 5);
-		
+		// leftTalon.setSelectedSensorPosition(0, 0, 5);
+
 		rightTalon = new WPI_TalonSRX(rightPort);
 		rightTalon.configNeutralDeadband(0.01, 0);
-		
+
 		// NOTE: the motors on the fourbar spin in opposite directions
-		//invertMotors();
+		// invertMotors();
 
 		talonGroup = new SpeedControllerGroup(leftTalon, rightTalon);
-		
-		//setBrakeModeOn(true);
-		
+
+		// setBrakeModeOn(true);
+
 		// set park to true before enabling the PID controller for the first time
 		isParking = true;
-		fourBarController = new PIDController(kP, kI, kD, this /* as PIDSource */,
-				this /* as PIDOutput */);
-		
+		fourBarController = new PIDController(kP, kI, kD, this /* as PIDSource */, this /* as PIDOutput */);
+
 		fourBarController.setOutputRange(-1, 1);
 		fourBarController.setAbsoluteTolerance(kTolerancePx);
-		fourBarController.setContinuous(true);
+		fourBarController.setContinuous(false);
 		fourBarController.setSetpoint(0.0);
-		//fourBarController.enable();
+		// fourBarController.enable();
 	}
 
-	private void setBrakeModeOn(boolean brakeOn)
-	{
+	private void setBrakeModeOn(boolean brakeOn) {
 		NeutralMode mode = (brakeOn ? NeutralMode.Brake : NeutralMode.Coast);
 		rightTalon.setNeutralMode(mode);
 		leftTalon.setNeutralMode(mode);
 	}
-	
-	private void invertMotors()
-	{
+
+	private void invertMotors() {
 		leftTalon.setInverted(true);
 		rightTalon.setInverted(false);
 	}
-	
+
 	public void setMotorOutput(double motorCommand) {
 		// command needs to be between -1 and 1
 		if (motorCommand > 1.0) {
@@ -115,21 +112,20 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 		talonGroup.set(motorCommand);
 	}
 
-	// setting a position will use the PID controller to reach that 
+	// setting a position will use the PID controller to reach that
 	public void setPostion(double desiredEncoderPosition) {
-		
+
 		fourBarController.setSetpoint(desiredEncoderPosition);
-		
+
 		isParking = (desiredEncoderPosition - kParkPosition) < 0.1;
 	}
 
 	// Make the arm safe and deactive PID control
-	public void park()
-	{
+	public void park() {
 		// set the position to 0
 		setPostion(kParkPosition);
 	}
-	
+
 	// PID controller output
 	public void pidWrite(double output) {
 		// SmartDashboard.putNumber("strafe pid output", output);
@@ -138,15 +134,14 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 		double command = output + getHoldingCommand();
 
 		// SmartDashboard.putNumber("strafe error", fourBarController.getError());
-		if (isParking && (output < 0.001))
-		{
+		if (isParking && (output < 0.001)) {
 			// if parking and the output is 0 - the arm is all the way down
 			// and the motor command 0
 			command = 0.0;
 		}
 		setMotorOutput(command);
 	}
-	
+
 	private double getHoldingCommand() {
 		// for now this is just a constant
 		return 0.0;
@@ -154,7 +149,8 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 
 	@Override
 	protected void initDefaultCommand() {
-		LiveWindow.addActuator("DriveSystem", "fourBarController", fourBarController);
+		// LiveWindow.addActuator("DriveSystem", "fourBarController",
+		// fourBarController);
 	}
 
 	public void tunePID() {
@@ -164,6 +160,10 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 
 		// fourBarController.setPID(P, I, D);
 
+	}
+
+	public void encoderValue() {
+		SmartDashboard.putNumber("Four Bar Encoder", leftTalon.getSelectedSensorPosition(0));
 	}
 
 }
