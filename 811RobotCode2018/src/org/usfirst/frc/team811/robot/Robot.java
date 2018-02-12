@@ -125,7 +125,8 @@ public class Robot extends TimedRobot implements Constants {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		fourBar.encoderValue();
-		SmartDashboard.putNumber("Pid Output", fourBar.pidGet())
+		SmartDashboard.putNumber("Pid Output", fourBar.pidGet());
+		fourBar.setPostion(SmartDashboard.getNumber("PID Setpoint", 0));
 	}
 
 	/**
