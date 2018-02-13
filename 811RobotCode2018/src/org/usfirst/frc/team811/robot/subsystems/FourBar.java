@@ -2,6 +2,8 @@ package org.usfirst.frc.team811.robot.subsystems;
 
 //import org.usfirst.frc.team811.robot.commands.imagetrack;
 import org.usfirst.frc.team811.robot.Constants;
+import org.usfirst.frc.team811.robot.commands.drive_w_joystick;
+import org.usfirst.frc.team811.robot.commands.fourbar_test;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -20,6 +22,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutput {
 
+	private double MAX_SPEED = 0.6;
+	
 	// PIDSource begin implementation
 	PIDSourceType type = PIDSourceType.kDisplacement;
 
@@ -64,20 +68,20 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 		// left talon will be wired to the sensor
 		// TODO: verify with actual robot
 		leftTalon = new WPI_TalonSRX(leftPort);
-		leftTalon.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, 1);
-		leftTalon.setSensorPhase(true); /* keep sensor and motor in phase */
+		leftTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 1);
+		leftTalon.setSensorPhase(false); /* keep sensor and motor in phase */
 		leftTalon.configNeutralDeadband(0.01, 0);
-		// leftTalon.setSelectedSensorPosition(0, 0, 5);
+		leftTalon.setSelectedSensorPosition(0, 0, 5);
 
 		rightTalon = new WPI_TalonSRX(rightPort);
 		rightTalon.configNeutralDeadband(0.01, 0);
 
 		// NOTE: the motors on the fourbar spin in opposite directions
-		// invertMotors();
+		invertMotors();
 
 		talonGroup = new SpeedControllerGroup(leftTalon, rightTalon);
 
-		// setBrakeModeOn(true);
+		setBrakeModeOn(true);
 
 		// set park to true before enabling the PID controller for the first time
 		isParking = true;
@@ -87,7 +91,7 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 		fourBarController.setAbsoluteTolerance(kTolerancePx);
 		fourBarController.setContinuous(false);
 		fourBarController.setSetpoint(0.0);
-		// fourBarController.enable();
+		//fourBarController.enable();
 	}
 
 	private void setBrakeModeOn(boolean brakeOn) {
@@ -103,21 +107,26 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 
 	public void setMotorOutput(double motorCommand) {
 		// command needs to be between -1 and 1
-		if (motorCommand > 1.0) {
-			motorCommand = 1.0;
-		} else if (motorCommand < -1.0) {
-			motorCommand = -1.0;
+		if (motorCommand > MAX_SPEED) {
+			motorCommand = MAX_SPEED;
+		} else if (motorCommand < -MAX_SPEED) {
+			motorCommand = -MAX_SPEED;
 		}
 
+		SmartDashboard.putNumber("motorCommand", motorCommand);
 		talonGroup.set(motorCommand);
 	}
 
 	// setting a position will use the PID controller to reach that
 	public void setPostion(double desiredEncoderPosition) {
-
-		fourBarController.setSetpoint(desiredEncoderPosition);
-
-		isParking = (desiredEncoderPosition - kParkPosition) < 0.1;
+		
+		double delta = Math.abs(fourBarController.getSetpoint() - desiredEncoderPosition);
+		if (delta > 0.001)
+		{
+			fourBarController.setSetpoint(desiredEncoderPosition);
+	
+			isParking = (desiredEncoderPosition - kParkPosition) < 0.1;
+		}
 	}
 
 	// Make the arm safe and deactive PID control
@@ -139,7 +148,7 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 			// and the motor command 0
 			command = 0.0;
 		}
-		setMotorOutput(command);
+		//setMotorOutput(command);
 	}
 
 	private double getHoldingCommand() {
@@ -150,7 +159,9 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 	@Override
 	protected void initDefaultCommand() {
 		// LiveWindow.addActuator("DriveSystem", "fourBarController",
-		// fourBarController);
+		// fourBarController);MAX_SPEED
+
+		setDefaultCommand(new fourbar_test());
 	}
 
 	public void tunePID() {

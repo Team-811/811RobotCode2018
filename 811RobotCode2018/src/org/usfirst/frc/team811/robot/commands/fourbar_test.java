@@ -14,15 +14,19 @@ public class fourbar_test extends Command {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(Robot.fourBar);
+		SmartDashboard.setDefaultNumber("four bar motor value", 0);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
+		
+		
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.fourBar.setMotorOutput(SmartDashboard.getNumber("four bar motor value", 0));
+		double newValue = SmartDashboard.getNumber("four bar motor value", 0);
+		Robot.fourBar.setMotorOutput(newValue);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

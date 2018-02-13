@@ -49,6 +49,8 @@ public class OI implements Constants {
 		fourbar_climb = new JoystickButton(RobotMap.joystick2, FOURBAR_CLIMB_BUTTON);
 		fourbar_climb.whenPressed(new fourbar_climb());
 
+		System.out.println("in OI()");
+
 		// Smartdashboard Button
 		SmartDashboard.putData("start four bar motor", new fourbar_test());
 	}

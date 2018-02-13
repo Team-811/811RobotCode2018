@@ -53,6 +53,9 @@ public class Robot extends TimedRobot implements Constants {
 		oi = new OI(); // has to go last
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
+		
+		SmartDashboard.setDefaultNumber("PID Setpoint", 0);
+
 	}
 
 	/**
@@ -126,7 +129,10 @@ public class Robot extends TimedRobot implements Constants {
 		Scheduler.getInstance().run();
 		fourBar.encoderValue();
 		SmartDashboard.putNumber("Pid Output", fourBar.pidGet());
-		fourBar.setPostion(SmartDashboard.getNumber("PID Setpoint", 0));
+		double setpoint = SmartDashboard.getNumber("PID Setpoint", 0);
+		fourBar.setPostion(setpoint);
+		SmartDashboard.putNumber("Left Drive",RobotMap.drivefrontleft.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("Right Drive",RobotMap.drivefrontright.getSelectedSensorPosition(0));
 	}
 
 	/**
