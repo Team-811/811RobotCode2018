@@ -112,6 +112,7 @@ public class MotionProfile extends Subsystem {
 			occuranceNumber++;
 
 			if (occuranceNumber >= occuranceTolerance) {
+				occuranceNumber = 0;
 				return true;
 			} else {
 				return false;
@@ -177,6 +178,84 @@ public class MotionProfile extends Subsystem {
 	}
 
 	public void generateRightSwitchTrajectory() {
+
+		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0, 0),
+				// new Waypoint(1.8288, 4.2672, 0), // Waypoint @ x=-2, y=-2, exit angle=0
+				// radians
+
+				// new Waypoint(2,-2,Pathfinder.d2r(-90))
+		};
+
+		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
+				Trajectory.Config.SAMPLES_HIGH, 0.05, max_velocity, max_acceleration, max_jerk);
+		trajectory = Pathfinder.generate(points, config);
+		modifier = new TankModifier(trajectory).modify(wheel_base_distance);
+
+		/*
+		 * for (int i = 0; i < trajectory.length(); i++) { Trajectory.Segment seg =
+		 * trajectory.get(i);
+		 * 
+		 * System.out.printf("%f,%f,%f,%f,%f,%f,%f,%f\n", seg.dt, seg.x, seg.y,
+		 * seg.position, seg.velocity, seg.acceleration, seg.jerk, seg.heading);
+		 * 
+		 * }
+		 */
+
+	}
+
+	public void generateRightSwitchToCubePickupTrajectory() {
+
+		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0, 0),
+				// new Waypoint(1.8288, 4.2672, 0), // Waypoint @ x=-2, y=-2, exit angle=0
+				// radians
+
+				// new Waypoint(2,-2,Pathfinder.d2r(-90))
+		};
+
+		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
+				Trajectory.Config.SAMPLES_HIGH, 0.05, max_velocity, max_acceleration, max_jerk);
+		trajectory = Pathfinder.generate(points, config);
+		modifier = new TankModifier(trajectory).modify(wheel_base_distance);
+
+		/*
+		 * for (int i = 0; i < trajectory.length(); i++) { Trajectory.Segment seg =
+		 * trajectory.get(i);
+		 * 
+		 * System.out.printf("%f,%f,%f,%f,%f,%f,%f,%f\n", seg.dt, seg.x, seg.y,
+		 * seg.position, seg.velocity, seg.acceleration, seg.jerk, seg.heading);
+		 * 
+		 * }
+		 */
+
+	}
+
+	public void generateLeftSwitchToCubePickupTrajectory() {
+
+		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0, 0),
+				// new Waypoint(1.8288, 4.2672, 0), // Waypoint @ x=-2, y=-2, exit angle=0
+				// radians
+
+				// new Waypoint(2,-2,Pathfinder.d2r(-90))
+		};
+
+		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
+				Trajectory.Config.SAMPLES_HIGH, 0.05, max_velocity, max_acceleration, max_jerk);
+		trajectory = Pathfinder.generate(points, config);
+		modifier = new TankModifier(trajectory).modify(wheel_base_distance);
+
+		/*
+		 * for (int i = 0; i < trajectory.length(); i++) { Trajectory.Segment seg =
+		 * trajectory.get(i);
+		 * 
+		 * System.out.printf("%f,%f,%f,%f,%f,%f,%f,%f\n", seg.dt, seg.x, seg.y,
+		 * seg.position, seg.velocity, seg.acceleration, seg.jerk, seg.heading);
+		 * 
+		 * }
+		 */
+
+	}
+
+	public void generateCubePickupTrajectory() {
 
 		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0, 0),
 				// new Waypoint(1.8288, 4.2672, 0), // Waypoint @ x=-2, y=-2, exit angle=0
