@@ -8,7 +8,7 @@ public interface Constants {
 	int COMPRESSOR_PORT = 9;
 
 	int WINCH_PORT = 1;
-	
+
 	int FRONT_RIGHT_PORT = 6;
 	int BACK_RIGHT_PORT = 7;
 
@@ -18,8 +18,8 @@ public interface Constants {
 	int FOURBAR_LEFT_PORT = 4;
 	int FOURBAR_RIGHT_PORT = 5;
 	// end Can Bus Ids
-	
-	// pnuematic controller ports 
+
+	// pnuematic controller ports
 	int OPEN_PORT = 0;
 	int CLOSE_PORT = 1;
 
@@ -37,7 +37,6 @@ public interface Constants {
 	int FOURBAR_DOWN_POSITION = 0; // TODO
 	int FOURBAR_CLIMB_POSITION = 0; // TODO
 	int FOURBAR_SWITCH_POSITION = 0; // TODO
-	
 
 	// controls
 
@@ -49,12 +48,14 @@ public interface Constants {
 	// operator
 	int INTAKE_OPEN_BUTTON = 3; // a
 	int INTAKE_CLOSE_BUTTON = 2; // b
-	//int INTAKE_STOP_BUTTON = 7; // back
-	
+	// int INTAKE_STOP_BUTTON = 7; // back
+
+	// Four Bar
 	int FOURBAR_UP_BUTTON = 8;
 	int FOURBAR_DOWN_BUTTON = 6;
 	int FOURBAR_SWITCH_BUTTON = 7;
 	int FOURBAR_CLIMB_BUTTON = 9;
+	int FOURBAR_AXIS = 1; // TODO
 
 	int CLIMBER_UP_BUTTON = 6;
 	int CLIMBER_DOWN_BUTTON = 5;

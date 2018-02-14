@@ -2,13 +2,14 @@ package org.usfirst.frc.team811.robot.subsystems;
 
 //import org.usfirst.frc.team811.robot.commands.imagetrack;
 import org.usfirst.frc.team811.robot.Constants;
-import org.usfirst.frc.team811.robot.commands.drive_w_joystick;
+import org.usfirst.frc.team811.robot.RobotMap;
 import org.usfirst.frc.team811.robot.commands.fourbar_test;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
@@ -23,7 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutput {
 
 	private double MAX_SPEED = 0.6;
-	
+
 	// PIDSource begin implementation
 	PIDSourceType type = PIDSourceType.kDisplacement;
 
@@ -48,12 +49,16 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 	/* SmartDashboard in Test mode has support for helping you tune */
 	/* controllers by displaying a form where you can enter new P, I, */
 	/* and D constants and test the mechanism. */
+
 	private double kP = 0.03;
 	private double kI = 0.00;
 	private double kD = 0.01;
 	private double kF = 0.00; // look this up
 	private double kTolerancePx = 10;
 	private double kParkPosition = 0.0;
+	private double kJoystickMultiplier = 10;
+
+	Joystick joy2 = RobotMap.joystick2;
 
 	// four bar
 	private WPI_TalonSRX leftTalon;
@@ -91,7 +96,7 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 		fourBarController.setAbsoluteTolerance(kTolerancePx);
 		fourBarController.setContinuous(false);
 		fourBarController.setSetpoint(0.0);
-		//fourBarController.enable();
+		// fourBarController.enable();
 	}
 
 	private void setBrakeModeOn(boolean brakeOn) {
@@ -117,14 +122,24 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 		talonGroup.set(motorCommand);
 	}
 
+	public void fourBarWithJoy() {
+
+		double setpointVal = fourBarController.getSetpoint();
+
+		if ((joy2.getRawAxis(FOURBAR_AXIS) > .2) || (joy2.getRawAxis(FOURBAR_AXIS) < -.2)) {
+			setpointVal = setpointVal + (joy2.getRawAxis(FOURBAR_AXIS) * kJoystickMultiplier);
+			fourBarController.setSetpoint(setpointVal);
+		}
+
+	}
+
 	// setting a position will use the PID controller to reach that
 	public void setPostion(double desiredEncoderPosition) {
-		
+
 		double delta = Math.abs(fourBarController.getSetpoint() - desiredEncoderPosition);
-		if (delta > 0.001)
-		{
+		if (delta > 0.001) {
 			fourBarController.setSetpoint(desiredEncoderPosition);
-	
+
 			isParking = (desiredEncoderPosition - kParkPosition) < 0.1;
 		}
 	}
@@ -148,7 +163,7 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 			// and the motor command 0
 			command = 0.0;
 		}
-		//setMotorOutput(command);
+		// setMotorOutput(command);
 	}
 
 	private double getHoldingCommand() {
