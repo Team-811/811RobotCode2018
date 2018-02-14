@@ -3,7 +3,7 @@ package org.usfirst.frc.team811.robot.subsystems;
 //import org.usfirst.frc.team811.robot.commands.imagetrack;
 import org.usfirst.frc.team811.robot.Constants;
 import org.usfirst.frc.team811.robot.RobotMap;
-import org.usfirst.frc.team811.robot.commands.fourbar_test;
+import org.usfirst.frc.team811.robot.commands.fourbar_w_joystick;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -176,7 +176,7 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 		// LiveWindow.addActuator("DriveSystem", "fourBarController",
 		// fourBarController);MAX_SPEED
 
-		setDefaultCommand(new fourbar_test());
+		setDefaultCommand(new fourbar_w_joystick());
 	}
 
 	public void tunePID() {
