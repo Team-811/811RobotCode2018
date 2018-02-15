@@ -1,5 +1,7 @@
 package org.usfirst.frc.team811.robot.commands;
 
+import org.usfirst.frc.team811.robot.Robot;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -10,10 +12,12 @@ public class fourbar_climb extends Command {
     public fourbar_climb() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	requires(Robot.fourBar);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.fourBar.setPostion(10000);
     }
 
     // Called repeatedly when this Command is scheduled to run

@@ -26,7 +26,7 @@ public class fourbar_test extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		double newValue = SmartDashboard.getNumber("four bar motor value", 0);
-		Robot.fourBar.setMotorOutput(newValue);
+		//Robot.fourBar.setMotorOutput(newValue);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

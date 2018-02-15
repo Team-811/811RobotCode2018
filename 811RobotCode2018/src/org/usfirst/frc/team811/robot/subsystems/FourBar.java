@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutput {
 
-	private double MAX_SPEED = 0.6;
+	private double MAX_SPEED = 0.4;
 
 	// PIDSource begin implementation
 	PIDSourceType type = PIDSourceType.kDisplacement;
@@ -50,11 +50,11 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 	/* controllers by displaying a form where you can enter new P, I, */
 	/* and D constants and test the mechanism. */
 
-	private double kP = 0.03;
+	private double kP = 0.003;
 	private double kI = 0.00;
-	private double kD = 0.01;
+	private double kD = 0.001;
 	private double kF = 0.00; // look this up
-	private double kTolerancePx = 10;
+	private double kTolerancePx = 100;
 	private double kParkPosition = 0.0;
 	private double kJoystickMultiplier = 10;
 
@@ -92,11 +92,11 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 		isParking = true;
 		fourBarController = new PIDController(kP, kI, kD, this /* as PIDSource */, this /* as PIDOutput */);
 
-		fourBarController.setOutputRange(-1, 1);
+		fourBarController.setOutputRange(-0.25, 0.25);
 		fourBarController.setAbsoluteTolerance(kTolerancePx);
 		fourBarController.setContinuous(false);
 		fourBarController.setSetpoint(0.0);
-		// fourBarController.enable();
+		fourBarController.enable();
 	}
 
 	private void setBrakeModeOn(boolean brakeOn) {
@@ -106,8 +106,8 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 	}
 
 	private void invertMotors() {
-		leftTalon.setInverted(true);
-		rightTalon.setInverted(false);
+		leftTalon.setInverted(false);
+		rightTalon.setInverted(true);
 	}
 
 	public void setMotorOutput(double motorCommand) {
@@ -140,7 +140,7 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 		if (delta > 0.001) {
 			fourBarController.setSetpoint(desiredEncoderPosition);
 
-			isParking = (desiredEncoderPosition - kParkPosition) < 0.1;
+			//isParking = (desiredEncoderPosition - kParkPosition) < 0.1;
 		}
 	}
 
@@ -158,17 +158,17 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 		double command = output + getHoldingCommand();
 
 		// SmartDashboard.putNumber("strafe error", fourBarController.getError());
-		if (isParking && (output < 0.001)) {
-			// if parking and the output is 0 - the arm is all the way down
-			// and the motor command 0
-			command = 0.0;
-		}
-		// setMotorOutput(command);
+//		if (isParking && (output < 0.001)) {
+//			// if parking and the output is 0 - the arm is all the way down
+//			// and the motor command 0
+//			command = 0.0;
+//		}
+		 setMotorOutput(command);
 	}
 
 	private double getHoldingCommand() {
 		// for now this is just a constant
-		return 0.0;
+		return 0.25;
 	}
 
 	@Override
