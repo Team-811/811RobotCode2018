@@ -1,10 +1,15 @@
 package org.usfirst.frc.team811.robot.subsystems;
 
+import org.usfirst.frc.team811.robot.Constants;
 import org.usfirst.frc.team811.robot.RobotMap;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -17,7 +22,7 @@ import jaci.pathfinder.modifiers.TankModifier;
 /**
  *
  */
-public class MotionProfile extends Subsystem {
+public class MotionProfile extends Subsystem implements Constants, PIDSource, PIDOutput {
 
 	WPI_TalonSRX frontright = RobotMap.drivefrontright;
 	WPI_TalonSRX backright = RobotMap.drivebackright;
@@ -28,10 +33,26 @@ public class MotionProfile extends Subsystem {
 	DifferentialDrive driveTrain = RobotMap.driveTrain;
 	AHRS ahrs = RobotMap.ahrs;
 
+	private PIDController rotateController;
+
+	private double MAX_SPEED = 0.4;
+
+	/* The following PID Controller coefficients will need to be tuned */
+	/* to match the dynamics of your drive system. Note that the */
+	/* SmartDashboard in Test mode has support for helping you tune */
+	/* controllers by displaying a form where you can enter new P, I, */
+	/* and D constants and test the mechanism. */
+
+	private double rotateKP = 0.003;
+	private double rotateKI = 0.00;
+	private double rotateKD = 0.001;
+	private double rotateKTolerance = 100.0;
+
 	EncoderFollower leftFollower;
 	EncoderFollower rightFollower;
 	Trajectory trajectory;
 	TankModifier modifier;
+
 	double l;
 	double r;
 
@@ -54,8 +75,51 @@ public class MotionProfile extends Subsystem {
 	int occuranceNumber = 0;
 	int occuranceTolerance = 10;
 
+	public MotionProfile() {
+		rotateController = new PIDController(rotateKP, rotateKI, rotateKP, this, this);
+		rotateController.setOutputRange(-0.5, 0.5);
+		rotateController.setAbsoluteTolerance(rotateKTolerance);
+		rotateController.setContinuous(true);
+		rotateController.setSetpoint(0.0);
+		rotateController.disable();
+	}
+
+	// PIDSource begin implementation
+	PIDSourceType type = PIDSourceType.kDisplacement;
+
+	@Override
+	public void setPIDSourceType(PIDSourceType pidSourceType) {
+		type = pidSourceType;
+	}
+
+	@Override
+	public PIDSourceType getPIDSourceType() {
+		return type;
+	}
+
+	@Override
+	public double pidGet() {
+		return (double) ahrs.getYaw();
+	}
+	// PIDSource end implementation
+
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
+
+	public void pidWrite(double output) {
+		// SmartDashboard.putNumber("strafe pid output", output);
+
+		// Take the output of the PID loop and add the offset to hold position
+		double command = output;
+
+		// SmartDashboard.putNumber("strafe error", fourBarController.getError());
+		// if (isParking && (output < 0.001)) {
+		// // if parking and the output is 0 - the arm is all the way down
+		// // and the motor command 0
+		// command = 0.0;
+		// }
+		driveTrain.arcadeDrive(0, command);
+	}
 
 	public void configureFollower() {
 
@@ -70,8 +134,8 @@ public class MotionProfile extends Subsystem {
 		rightEncoderStartingPosition = frontright.getSelectedSensorPosition(0);
 		leftFollower.configureEncoder(leftEncoderStartingPosition, encoder_rotation, wheel_diameter);
 		rightFollower.configureEncoder(rightEncoderStartingPosition, encoder_rotation, wheel_diameter);
-		leftFollower.configurePIDVA(kP, 0.0, kD, 1 / absolute_max_velocity, acceleration_gain);
-		rightFollower.configurePIDVA(kP, 0.0, kD, 1 / absolute_max_velocity, acceleration_gain);
+		leftFollower.configurePIDVA(rotateKP, 0.0, kD, 1 / absolute_max_velocity, acceleration_gain);
+		rightFollower.configurePIDVA(rotateKP, 0.0, kD, 1 / absolute_max_velocity, acceleration_gain);
 
 	}
 

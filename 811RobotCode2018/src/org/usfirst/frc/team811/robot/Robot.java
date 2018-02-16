@@ -10,6 +10,7 @@ package org.usfirst.frc.team811.robot;
 import org.usfirst.frc.team811.robot.subsystems.Drive;
 import org.usfirst.frc.team811.robot.subsystems.FourBar;
 import org.usfirst.frc.team811.robot.subsystems.Intake;
+import org.usfirst.frc.team811.robot.subsystems.MotionProfile;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -32,6 +33,8 @@ public class Robot extends TimedRobot implements Constants {
 	public static Drive drive;
 	public static Intake intake;
 	public static FourBar fourBar;
+	public static MotionProfile motionProfile;
+	public static FieldData fieldData;
 
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -49,11 +52,13 @@ public class Robot extends TimedRobot implements Constants {
 		drive = new Drive();
 		intake = new Intake();
 		fourBar = new FourBar(FOURBAR_LEFT_PORT, FOURBAR_RIGHT_PORT);
+		motionProfile = new MotionProfile();
+		fieldData = new FieldData();
 
 		oi = new OI(); // has to go last
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
-		
+
 		SmartDashboard.setDefaultNumber("PID Setpoint", 0);
 
 	}
@@ -131,8 +136,8 @@ public class Robot extends TimedRobot implements Constants {
 		SmartDashboard.putNumber("Pid Output", fourBar.pidGet());
 		double setpoint = SmartDashboard.getNumber("PID Setpoint", 0);
 		fourBar.setPostion(setpoint);
-		SmartDashboard.putNumber("Left Drive",RobotMap.drivefrontleft.getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("Right Drive",RobotMap.drivefrontright.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("Left Drive", RobotMap.drivefrontleft.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("Right Drive", RobotMap.drivefrontright.getSelectedSensorPosition(0));
 	}
 
 	/**
