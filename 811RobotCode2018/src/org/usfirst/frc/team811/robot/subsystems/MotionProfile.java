@@ -35,7 +35,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 	private PIDController rotateController;
 
-	private double MAX_SPEED = 0.4;
+	private double MAX_SPEED = 0.5;
 
 	/* The following PID Controller coefficients will need to be tuned */
 	/* to match the dynamics of your drive system. Note that the */
@@ -106,20 +106,40 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 
+	// PID Controller
+
 	public void pidWrite(double output) {
 		// SmartDashboard.putNumber("strafe pid output", output);
 
 		// Take the output of the PID loop and add the offset to hold position
 		double command = output;
 
-		// SmartDashboard.putNumber("strafe error", fourBarController.getError());
-		// if (isParking && (output < 0.001)) {
-		// // if parking and the output is 0 - the arm is all the way down
-		// // and the motor command 0
-		// command = 0.0;
-		// }
-		driveTrain.arcadeDrive(0, command);
+		setRotate(command);
 	}
+
+	public void setRotate(double motorCommand) {
+		// command needs to be between -1 and 1
+		if (motorCommand > MAX_SPEED) {
+			motorCommand = MAX_SPEED;
+		} else if (motorCommand < -MAX_SPEED) {
+			motorCommand = -MAX_SPEED;
+		}
+
+		// SmartDashboard.putNumber("motorCommand", motorCommand);
+		driveTrain.arcadeDrive(0, motorCommand);
+	}
+
+	public void setPostion(double desiredAngle) {
+
+		double delta = Math.abs(rotateController.getSetpoint() - desiredAngle);
+		if (delta > 0.001) {
+			rotateController.setSetpoint(desiredAngle);
+
+			// isParking = (desiredEncoderPosition - kParkPosition) < 0.1;
+		}
+	}
+
+	// Path Finder
 
 	public void configureFollower() {
 
