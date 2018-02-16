@@ -15,6 +15,7 @@ public class fourbar_test extends Command {
 		// eg. requires(chassis);
 		requires(Robot.fourBar);
 		SmartDashboard.setDefaultNumber("four bar motor value", 0);
+		
 	}
 
 	// Called just before this Command runs the first time

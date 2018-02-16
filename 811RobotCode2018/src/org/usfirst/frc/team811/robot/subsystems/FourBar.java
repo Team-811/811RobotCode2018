@@ -3,12 +3,14 @@ package org.usfirst.frc.team811.robot.subsystems;
 //import org.usfirst.frc.team811.robot.commands.imagetrack;
 import org.usfirst.frc.team811.robot.Constants;
 import org.usfirst.frc.team811.robot.RobotMap;
+import org.usfirst.frc.team811.robot.commands.fourbar_test;
 import org.usfirst.frc.team811.robot.commands.fourbar_w_joystick;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
@@ -50,9 +52,9 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 	/* controllers by displaying a form where you can enter new P, I, */
 	/* and D constants and test the mechanism. */
 
-	private double kP = 0.003;
+	private double kP = 0.0004;
 	private double kI = 0.00;
-	private double kD = 0.001;
+	private double kD = 0.0002;
 	private double kF = 0.00; // look this up
 	private double kTolerancePx = 100;
 	private double kParkPosition = 0.0;
@@ -65,6 +67,7 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 	private WPI_TalonSRX rightTalon;
 	private SpeedControllerGroup talonGroup;
 	private PIDController fourBarController;
+	private DigitalInput bottomLimitSwitch;
 
 	private boolean isParking = true;
 
@@ -106,8 +109,8 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 	}
 
 	private void invertMotors() {
-		leftTalon.setInverted(false);
-		rightTalon.setInverted(true);
+		leftTalon.setInverted(true);
+		rightTalon.setInverted(false);
 	}
 
 	public void setMotorOutput(double motorCommand) {
@@ -152,7 +155,7 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 
 	// PID controller output
 	public void pidWrite(double output) {
-		// SmartDashboard.putNumber("strafe pid output", output);
+		 SmartDashboard.putNumber("strafe pid output", output);
 
 		// Take the output of the PID loop and add the offset to hold position
 		double command = output + getHoldingCommand();
@@ -168,7 +171,7 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 
 	private double getHoldingCommand() {
 		// for now this is just a constant
-		return 0.25;
+		return 0.23;
 	}
 
 	@Override
@@ -177,6 +180,7 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 		// fourBarController);MAX_SPEED
 
 		setDefaultCommand(new fourbar_w_joystick());
+		//setDefaultCommand(new fourbar_test());
 	}
 
 	public void tunePID() {

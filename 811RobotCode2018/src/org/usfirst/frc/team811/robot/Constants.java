@@ -46,15 +46,15 @@ public interface Constants {
 	int INVERSE_CONTROLS = 6; // TODO
 
 	// operator
-	int INTAKE_OPEN_BUTTON = 3; // a
-	int INTAKE_CLOSE_BUTTON = 2; // b
+	int INTAKE_OPEN_BUTTON = 6; // a
+	int INTAKE_CLOSE_BUTTON = 5; // b
 	// int INTAKE_STOP_BUTTON = 7; // back
 
 	// Four Bar
-	int FOURBAR_UP_BUTTON = 8;
-	int FOURBAR_DOWN_BUTTON = 6;
-	int FOURBAR_SWITCH_BUTTON = 7;
-	int FOURBAR_CLIMB_BUTTON = 9;
+	int FOURBAR_UP_BUTTON = 3;
+	int FOURBAR_DOWN_BUTTON = 1;
+	int FOURBAR_SWITCH_BUTTON = 2;
+	int FOURBAR_CLIMB_BUTTON = 4;
 	int FOURBAR_AXIS = 1; // TODO
 
 	int CLIMBER_UP_BUTTON = 6;

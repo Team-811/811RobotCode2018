@@ -37,7 +37,7 @@ public class Drive extends Subsystem implements Constants {
 		if ((joy1.getRawAxis(FORWARD_DRIVE_AXIS) < .2) && (joy1.getRawAxis(FORWARD_DRIVE_AXIS) > -.2)) {
 			moveVal = 0;
 		} else {
-			moveVal = -joy1.getRawAxis(FORWARD_DRIVE_AXIS);
+			moveVal = joy1.getRawAxis(FORWARD_DRIVE_AXIS);
 		}
 
 		if ((joy1.getRawAxis(TURN_DRIVE_AXIS) < .2) && (joy1.getRawAxis(TURN_DRIVE_AXIS) > -.2)) {
