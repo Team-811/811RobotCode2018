@@ -46,8 +46,7 @@ public interface Constants {
 	int INVERSE_CONTROLS = 6; // TODO
 
 	// operator
-	int INTAKE_OPEN_BUTTON = 6; // a
-	int INTAKE_CLOSE_BUTTON = 5; // b
+	int INTAKE_BUTTON = 3; // b
 	// int INTAKE_STOP_BUTTON = 7; // back
 
 	// Four Bar

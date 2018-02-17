@@ -35,10 +35,10 @@ public class OI implements Constants {
 	public OI() {
 
 		// Operator controller
-		intake_close = new JoystickButton(RobotMap.joystick2, INTAKE_CLOSE_BUTTON);
-		intake_close.whenPressed(new Intake_close());
-		intake_open = new JoystickButton(RobotMap.joystick2, INTAKE_OPEN_BUTTON);
-		intake_open.whenPressed(new Intake_open());
+		intake_close = new JoystickButton(RobotMap.joystick2, INTAKE_BUTTON);
+		intake_close.whenReleased(new Intake_close());
+		intake_open = new JoystickButton(RobotMap.joystick2, INTAKE_BUTTON);
+		intake_open.whenActive(new Intake_open());
 
 		fourbar_up = new JoystickButton(RobotMap.joystick2, FOURBAR_UP_BUTTON);
 		fourbar_up.whenPressed(new fourbar_up());

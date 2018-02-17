@@ -50,6 +50,8 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 	EncoderFollower leftFollower;
 	EncoderFollower rightFollower;
+	Trajectory trajectoryLeft;
+	Trajectory trajectoryRight;
 	Trajectory trajectory;
 	TankModifier modifier;
 
@@ -159,7 +161,8 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 	}
 
-	public void followTrajectory(boolean reverse) {
+	public void followTrajectory(boolean reverse, int switchSide) {
+
 		int changeDirection;
 
 		if (reverse) {
@@ -237,8 +240,8 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 	public void generateLeftSwitchTrajectory() {
 
-		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0, 0),
-				// new Waypoint(1.8288, 4.2672, 0), // Waypoint @ x=-2, y=-2, exit angle=0
+		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(3, 2.7432, 0),
+				new Waypoint(4, 2.7432, 0), // Waypoint @ x=-2, y=-2, exit angle=0
 				// radians
 
 				// new Waypoint(2,-2,Pathfinder.d2r(-90))
@@ -246,7 +249,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
 				Trajectory.Config.SAMPLES_HIGH, 0.05, max_velocity, max_acceleration, max_jerk);
-		trajectory = Pathfinder.generate(points, config);
+		trajectoryLeft = Pathfinder.generate(points, config);
 		modifier = new TankModifier(trajectory).modify(wheel_base_distance);
 
 		/*
@@ -263,7 +266,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 	public void generateRightSwitchTrajectory() {
 
-		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0, 0),
+		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(4, 0, 0),
 				// new Waypoint(1.8288, 4.2672, 0), // Waypoint @ x=-2, y=-2, exit angle=0
 				// radians
 
@@ -272,7 +275,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
 				Trajectory.Config.SAMPLES_HIGH, 0.05, max_velocity, max_acceleration, max_jerk);
-		trajectory = Pathfinder.generate(points, config);
+		trajectoryRight = Pathfinder.generate(points, config);
 		modifier = new TankModifier(trajectory).modify(wheel_base_distance);
 
 		/*
