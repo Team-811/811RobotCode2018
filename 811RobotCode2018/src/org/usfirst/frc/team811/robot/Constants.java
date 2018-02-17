@@ -26,6 +26,7 @@ public interface Constants {
 	// variables
 
 	double SPEED_SCALE = 0.85;
+	double ROTATE_SCALE = 0.4;
 	double DRIVE_DISTANCE_PER_PULSE = 1 / 9.5;
 	double GYRO_DIFFERENCE_VALUE = 10; // TODO
 
@@ -58,7 +59,7 @@ public interface Constants {
 	int FOURBAR_AXIS = 1; // TODO
 
 	int CLIMBER_UP_BUTTON = 6;
-	int CLIMBER_DOWN_BUTTON = 5;
+	int CLIMBER_DOWN_BUTTON = 5;   
 
 	int SHOOTER_BUTTON = 3;
 	int PORT_LIFT_AXIS = 1;

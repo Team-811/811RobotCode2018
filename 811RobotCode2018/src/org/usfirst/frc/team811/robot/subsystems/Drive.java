@@ -47,7 +47,7 @@ public class Drive extends Subsystem implements Constants {
 			turnVal = joy1.getRawAxis(TURN_DRIVE_AXIS);
 		}
 
-		 driveTrain.arcadeDrive(-1 * moveVal * SPEED_SCALE, turnVal * SPEED_SCALE);
+		 driveTrain.arcadeDrive(-1 * moveVal * SPEED_SCALE, turnVal * ROTATE_SCALE);
 		//driveTrain.arcadeDrive(-1 * moveVal * SPEED_SCALE, turnVal * SPEED_SCALE);
 
 		/*
