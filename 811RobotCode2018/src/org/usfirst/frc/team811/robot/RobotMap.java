@@ -85,7 +85,7 @@ public class RobotMap implements Constants {
 		ahrs = new AHRS(SPI.Port.kMXP);
 
 		// Intake
-		//gripperPneumatic = new DoubleSolenoid(COMPRESSOR_PORT, OPEN_PORT, CLOSE_PORT); // TODO
+		gripperPneumatic = new DoubleSolenoid(COMPRESSOR_PORT, OPEN_PORT, CLOSE_PORT); // TODO
 		
 		// fourbar
 
