@@ -171,7 +171,7 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 
 	private double getHoldingCommand() {
 		// for now this is just a constant
-		return 0.27;
+		return 0.27  ;
 	}
 
 	@Override
