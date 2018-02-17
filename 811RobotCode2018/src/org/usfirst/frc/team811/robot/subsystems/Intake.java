@@ -15,11 +15,11 @@ public class Intake extends Subsystem {
 	DoubleSolenoid gripper = RobotMap.gripperPneumatic;
 
 	public void open() {
-		gripper.set(DoubleSolenoid.Value.kReverse);
+		gripper.set(DoubleSolenoid.Value.kForward);
 	}
 
 	public void close() {
-		gripper.set(DoubleSolenoid.Value.kForward);
+		gripper.set(DoubleSolenoid.Value.kReverse);
 	}
 
 	public void Neutral() {

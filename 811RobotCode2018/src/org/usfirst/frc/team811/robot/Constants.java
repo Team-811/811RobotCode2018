@@ -25,8 +25,8 @@ public interface Constants {
 
 	// variables
 
-	double SPEED_SCALE = 0.85;
-	double ROTATE_SCALE = 0.4;
+	double SPEED_SCALE = 0.7;
+	double ROTATE_SCALE = 0.45;
 	double DRIVE_DISTANCE_PER_PULSE = 1 / 9.5;
 	double GYRO_DIFFERENCE_VALUE = 10; // TODO
 
@@ -47,8 +47,8 @@ public interface Constants {
 	int INVERSE_CONTROLS = 6; // TODO
 
 	// operator
-	int INTAKE_CLOSE_BUTTON = 5;
-	int INTAKE_OPEN_BUTTON = 6;// b
+	int INTAKE_CLOSE_BUTTON = 6;
+	int INTAKE_OPEN_BUTTON = 5;// b
 	// int INTAKE_STOP_BUTTON = 7; // back
 
 	// Four Bar
