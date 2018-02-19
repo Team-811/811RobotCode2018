@@ -7,7 +7,8 @@
 
 package org.usfirst.frc.team811.robot;
 
-import org.usfirst.frc.team811.robot.commands.*;
+import org.usfirst.frc.team811.robot.commands.auto_drive_left_switch;
+import org.usfirst.frc.team811.robot.commands.auto_drive_right_switch;
 import org.usfirst.frc.team811.robot.subsystems.Drive;
 import org.usfirst.frc.team811.robot.subsystems.FieldData;
 import org.usfirst.frc.team811.robot.subsystems.FourBar;
@@ -56,18 +57,16 @@ public class Robot extends TimedRobot implements Constants {
 		fourBar = new FourBar(FOURBAR_LEFT_PORT, FOURBAR_RIGHT_PORT);
 		motionProfile = new MotionProfile();
 		fieldData = new FieldData();
-		
+
 		RobotMap.drivefrontleft.setSelectedSensorPosition(0, 0, 3);
 		RobotMap.drivefrontright.setSelectedSensorPosition(0, 0, 3);
-		
-		
 
 		oi = new OI(); // has to go last
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
 
 		SmartDashboard.setDefaultNumber("PID Setpoint", 0);
-		
+
 		motionProfile.generateDriveStraightTrajectory();
 
 	}
@@ -101,7 +100,9 @@ public class Robot extends TimedRobot implements Constants {
 	 */
 	@Override
 	public void autonomousInit() {
-		//m_autonomousCommand = m_chooser.getSelected();
+		// m_autonomousCommand = m_chooser.getSelected();
+
+		int switchSide = Robot.fieldData.getSwitchPosition();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
@@ -111,10 +112,15 @@ public class Robot extends TimedRobot implements Constants {
 		 */
 
 		// schedule the autonomous command (example)
-		
 
-		m_autonomousCommand = new auto_drive_straight();
-		m_autonomousCommand.start();
+		if (switchSide == -1) {
+			m_autonomousCommand = new auto_drive_left_switch();
+			m_autonomousCommand.start();
+		} else {
+			m_autonomousCommand = new auto_drive_right_switch();
+			m_autonomousCommand.start();
+		}
+
 	}
 
 	/**
@@ -144,8 +150,8 @@ public class Robot extends TimedRobot implements Constants {
 		Scheduler.getInstance().run();
 		fourBar.encoderValue();
 		SmartDashboard.putNumber("Pid Output", fourBar.pidGet());
-		//double setpoint = SmartDashboard.getNumber("PID Setpoint", 0);
-		//fourBar.setPostion(setpoint);
+		// double setpoint = SmartDashboard.getNumber("PID Setpoint", 0);
+		// fourBar.setPostion(setpoint);
 		SmartDashboard.putNumber("Left Drive", RobotMap.drivefrontleft.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("Right Drive", RobotMap.drivefrontright.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("Gyro", RobotMap.ahrs.getYaw());

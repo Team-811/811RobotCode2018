@@ -56,7 +56,6 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 	TankModifier modifier;
 	TankModifier modifierLeft;
 	TankModifier modifierRight;
-	
 
 	double l;
 	double r;
@@ -82,7 +81,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 	int occuranceTolerance = 10;
 
 	public MotionProfile() {
-		rotateController = new PIDController(rotateKP, rotateKI, rotateKP, this, this);
+		rotateController = new PIDController(rotateKP, rotateKI, rotateKD, this, this);
 		rotateController.setOutputRange(-0.5, 0.5);
 		rotateController.setAbsoluteTolerance(rotateKTolerance);
 		rotateController.setContinuous(true);
@@ -147,19 +146,30 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 	// Path Finder
 
-	public void configureFollower(/*int switchSide*/) {
+	public void configureFollower(int switchSide) {
 
-		// driveLeft.setSelectedSensorPosition(0, 0, 1);
-		// driveRight.setSelectedSensorPosition(0, 0, 1);
-		
-		/*
-		if(switchSide == -1) {
+		if (switchSide == -1) {
 			modifier = modifierLeft;
-		}else {
+		} else {
 			modifier = modifierRight;
 		}
-		
-		*/
+
+		ahrs.reset();
+
+		leftFollower = new EncoderFollower(modifier.getLeftTrajectory());
+		rightFollower = new EncoderFollower(modifier.getRightTrajectory());
+
+		leftEncoderStartingPosition = frontleft.getSelectedSensorPosition(0);
+		rightEncoderStartingPosition = frontright.getSelectedSensorPosition(0);
+		leftFollower.configureEncoder(leftEncoderStartingPosition, encoder_rotation, wheel_diameter);
+		rightFollower.configureEncoder(rightEncoderStartingPosition, encoder_rotation, wheel_diameter);
+		leftFollower.configurePIDVA(kP, 0.0, kD, 1 / absolute_max_velocity, acceleration_gain);
+		rightFollower.configurePIDVA(kP, 0.0, kD, 1 / absolute_max_velocity, acceleration_gain);
+
+	}
+
+	public void configureFollower() {
+
 		ahrs.reset();
 
 		leftFollower = new EncoderFollower(modifier.getLeftTrajectory());
@@ -199,7 +209,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 		double turn = gyro_correction_power * (-1.0 / 80.0) * angleDifference;
 
 		driveTrain.tankDrive((l * changeDirection) + turn, (r * changeDirection) - turn);
-		//driveTrain.tankDrive((l * changeDirection), (r * changeDirection) );
+		// driveTrain.tankDrive((l * changeDirection), (r * changeDirection) );
 
 	}
 
@@ -228,7 +238,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 	public void generateDriveStraightTrajectory() {
 
-		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(4, -1 * yDirectionCorrection, 0),
+		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(4, 0 * yDirectionCorrection, 0),
 				// new Waypoint(1.8288, 4.2672, 0), // Waypoint @ x=-2, y=-2, exit angle=0
 				// radians
 
@@ -254,8 +264,9 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 	public void generateLeftSwitchTrajectory() {
 
-		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(3, 2.7432, 0),
-				new Waypoint(4, 2.7432, 0), // Waypoint @ x=-2, y=-2, exit angle=0
+		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(2.74, 2.66 * yDirectionCorrection, 0),
+				// new Waypoint(4, 2.7432 * yDirectionCorrection, 0), // Waypoint @ x=-2, y=-2,
+				// exit angle=0
 				// radians
 
 				// new Waypoint(2,-2,Pathfinder.d2r(-90))
@@ -280,7 +291,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 	public void generateRightSwitchTrajectory() {
 
-		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(4, 0, 0),
+		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(2.74, 0 * yDirectionCorrection, 0),
 				// new Waypoint(1.8288, 4.2672, 0), // Waypoint @ x=-2, y=-2, exit angle=0
 				// radians
 
@@ -306,7 +317,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 	public void generateRightSwitchToCubePickupTrajectory() {
 
-		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0, 0),
+		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0 * yDirectionCorrection, 0),
 				// new Waypoint(1.8288, 4.2672, 0), // Waypoint @ x=-2, y=-2, exit angle=0
 				// radians
 
@@ -332,7 +343,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 	public void generateLeftSwitchToCubePickupTrajectory() {
 
-		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0, 0),
+		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0 * yDirectionCorrection, 0),
 				// new Waypoint(1.8288, 4.2672, 0), // Waypoint @ x=-2, y=-2, exit angle=0
 				// radians
 
@@ -358,7 +369,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 	public void generateCubePickupTrajectory() {
 
-		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0, 0),
+		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0 * yDirectionCorrection, 0),
 				// new Waypoint(1.8288, 4.2672, 0), // Waypoint @ x=-2, y=-2, exit angle=0
 				// radians
 
@@ -384,7 +395,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 	public void generateScaleTrajectory() {
 
-		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0, 0),
+		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0 * yDirectionCorrection, 0),
 				// new Waypoint(1.8288, 4.2672, 0), // Waypoint @ x=-2, y=-2, exit angle=0
 				// radians
 
@@ -410,7 +421,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 	public void generateApproachTrajectory() {
 
-		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0, 0),
+		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0 * yDirectionCorrection, 0),
 				// new Waypoint(1.8288, 4.2672, 0), // Waypoint @ x=-2, y=-2, exit angle=0
 				// radians
 
