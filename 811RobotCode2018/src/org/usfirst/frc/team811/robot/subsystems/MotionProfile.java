@@ -54,6 +54,9 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 	Trajectory trajectoryRight;
 	Trajectory trajectory;
 	TankModifier modifier;
+	TankModifier modifierLeft;
+	TankModifier modifierRight;
+	
 
 	double l;
 	double r;
@@ -62,14 +65,15 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 	double max_acceleration = 0.5;
 	double max_jerk = 60.0;
 	double wheel_diameter = 0.15;
-	double wheel_base_distance = 0.3759;
-	int encoder_rotation = 1100;
-	double kD = 0.0;
+	double wheel_base_distance = 0.62;
+	int encoder_rotation = 1060;
+	double kD = 0.2;
 	double kP = 1;
 	double acceleration_gain = 0.0;
 	// TODO
-	double absolute_max_velocity = 0.78;
+	double absolute_max_velocity = 3.612;
 	double gyro_correction_power = 0.8;
+	double yDirectionCorrection = 0.87;
 
 	int leftEncoderStartingPosition;
 	int rightEncoderStartingPosition;
@@ -143,10 +147,19 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 	// Path Finder
 
-	public void configureFollower() {
+	public void configureFollower(/*int switchSide*/) {
 
 		// driveLeft.setSelectedSensorPosition(0, 0, 1);
 		// driveRight.setSelectedSensorPosition(0, 0, 1);
+		
+		/*
+		if(switchSide == -1) {
+			modifier = modifierLeft;
+		}else {
+			modifier = modifierRight;
+		}
+		
+		*/
 		ahrs.reset();
 
 		leftFollower = new EncoderFollower(modifier.getLeftTrajectory());
@@ -156,12 +169,12 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 		rightEncoderStartingPosition = frontright.getSelectedSensorPosition(0);
 		leftFollower.configureEncoder(leftEncoderStartingPosition, encoder_rotation, wheel_diameter);
 		rightFollower.configureEncoder(rightEncoderStartingPosition, encoder_rotation, wheel_diameter);
-		leftFollower.configurePIDVA(rotateKP, 0.0, kD, 1 / absolute_max_velocity, acceleration_gain);
-		rightFollower.configurePIDVA(rotateKP, 0.0, kD, 1 / absolute_max_velocity, acceleration_gain);
+		leftFollower.configurePIDVA(kP, 0.0, kD, 1 / absolute_max_velocity, acceleration_gain);
+		rightFollower.configurePIDVA(kP, 0.0, kD, 1 / absolute_max_velocity, acceleration_gain);
 
 	}
 
-	public void followTrajectory(boolean reverse, int switchSide) {
+	public void followTrajectory(boolean reverse) {
 
 		int changeDirection;
 
@@ -186,6 +199,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 		double turn = gyro_correction_power * (-1.0 / 80.0) * angleDifference;
 
 		driveTrain.tankDrive((l * changeDirection) + turn, (r * changeDirection) - turn);
+		//driveTrain.tankDrive((l * changeDirection), (r * changeDirection) );
 
 	}
 
@@ -214,7 +228,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 	public void generateDriveStraightTrajectory() {
 
-		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0, 0),
+		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(4, -1 * yDirectionCorrection, 0),
 				// new Waypoint(1.8288, 4.2672, 0), // Waypoint @ x=-2, y=-2, exit angle=0
 				// radians
 
@@ -250,7 +264,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
 				Trajectory.Config.SAMPLES_HIGH, 0.05, max_velocity, max_acceleration, max_jerk);
 		trajectoryLeft = Pathfinder.generate(points, config);
-		modifier = new TankModifier(trajectory).modify(wheel_base_distance);
+		modifierLeft = new TankModifier(trajectory).modify(wheel_base_distance);
 
 		/*
 		 * for (int i = 0; i < trajectory.length(); i++) { Trajectory.Segment seg =
@@ -276,7 +290,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
 				Trajectory.Config.SAMPLES_HIGH, 0.05, max_velocity, max_acceleration, max_jerk);
 		trajectoryRight = Pathfinder.generate(points, config);
-		modifier = new TankModifier(trajectory).modify(wheel_base_distance);
+		modifierRight = new TankModifier(trajectory).modify(wheel_base_distance);
 
 		/*
 		 * for (int i = 0; i < trajectory.length(); i++) { Trajectory.Segment seg =

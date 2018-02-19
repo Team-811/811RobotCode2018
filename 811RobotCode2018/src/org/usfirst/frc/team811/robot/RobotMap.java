@@ -61,7 +61,7 @@ public class RobotMap implements Constants {
 		// Drive Train Motors and Motor Groups
 		drivefrontright = new WPI_TalonSRX(FRONT_RIGHT_PORT);
 		drivefrontright.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 1);
-		drivefrontright.setSensorPhase(true); /* keep sensor and motor in phase */
+		drivefrontright.setSensorPhase(false); /* keep sensor and motor in phase */
 		drivefrontright.configNeutralDeadband(0.01, 0);
 
 		drivebackright = new WPI_TalonSRX(BACK_RIGHT_PORT);
@@ -85,7 +85,7 @@ public class RobotMap implements Constants {
 		ahrs = new AHRS(SPI.Port.kMXP);
 
 		// Intake
-		gripperPneumatic = new DoubleSolenoid(COMPRESSOR_PORT, OPEN_PORT, CLOSE_PORT); // TODO
+		//gripperPneumatic = new DoubleSolenoid(COMPRESSOR_PORT, OPEN_PORT, CLOSE_PORT); // TODO
 		
 		// fourbar
 

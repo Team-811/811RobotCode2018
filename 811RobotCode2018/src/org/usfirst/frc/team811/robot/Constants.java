@@ -26,7 +26,7 @@ public interface Constants {
 	// variables
 
 	double SPEED_SCALE = 0.7;
-	double ROTATE_SCALE = 0.45;
+	double ROTATE_SCALE = 0.6;
 	double DRIVE_DISTANCE_PER_PULSE = 1 / 9.5;
 	double GYRO_DIFFERENCE_VALUE = 10; // TODO
 

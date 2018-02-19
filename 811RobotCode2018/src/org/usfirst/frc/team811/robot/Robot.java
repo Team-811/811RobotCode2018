@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team811.robot;
 
+import org.usfirst.frc.team811.robot.commands.*;
 import org.usfirst.frc.team811.robot.subsystems.Drive;
 import org.usfirst.frc.team811.robot.subsystems.FieldData;
 import org.usfirst.frc.team811.robot.subsystems.FourBar;
@@ -55,12 +56,19 @@ public class Robot extends TimedRobot implements Constants {
 		fourBar = new FourBar(FOURBAR_LEFT_PORT, FOURBAR_RIGHT_PORT);
 		motionProfile = new MotionProfile();
 		fieldData = new FieldData();
+		
+		RobotMap.drivefrontleft.setSelectedSensorPosition(0, 0, 3);
+		RobotMap.drivefrontright.setSelectedSensorPosition(0, 0, 3);
+		
+		
 
 		oi = new OI(); // has to go last
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
 
 		SmartDashboard.setDefaultNumber("PID Setpoint", 0);
+		
+		motionProfile.generateDriveStraightTrajectory();
 
 	}
 
@@ -93,7 +101,7 @@ public class Robot extends TimedRobot implements Constants {
 	 */
 	@Override
 	public void autonomousInit() {
-		m_autonomousCommand = m_chooser.getSelected();
+		//m_autonomousCommand = m_chooser.getSelected();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
@@ -103,9 +111,10 @@ public class Robot extends TimedRobot implements Constants {
 		 */
 
 		// schedule the autonomous command (example)
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.start();
-		}
+		
+
+		m_autonomousCommand = new auto_drive_straight();
+		m_autonomousCommand.start();
 	}
 
 	/**
@@ -139,6 +148,8 @@ public class Robot extends TimedRobot implements Constants {
 		//fourBar.setPostion(setpoint);
 		SmartDashboard.putNumber("Left Drive", RobotMap.drivefrontleft.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("Right Drive", RobotMap.drivefrontright.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("Gyro", RobotMap.ahrs.getYaw());
+		SmartDashboard.putNumber("Meters", RobotMap.drivefrontleft.getSelectedSensorPosition(0) / 2081.25);
 	}
 
 	/**

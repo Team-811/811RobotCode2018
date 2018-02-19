@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutput {
 
-	private double MAX_SPEED = 0.5;
+	private double MAX_SPEED = 0.45;
 
 	// PIDSource begin implementation
 	PIDSourceType type = PIDSourceType.kDisplacement;
