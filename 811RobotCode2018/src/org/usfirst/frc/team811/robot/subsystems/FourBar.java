@@ -3,7 +3,6 @@ package org.usfirst.frc.team811.robot.subsystems;
 //import org.usfirst.frc.team811.robot.commands.imagetrack;
 import org.usfirst.frc.team811.robot.Constants;
 import org.usfirst.frc.team811.robot.RobotMap;
-import org.usfirst.frc.team811.robot.commands.fourbar_test;
 import org.usfirst.frc.team811.robot.commands.fourbar_w_joystick;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -99,7 +98,7 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 		fourBarController.setAbsoluteTolerance(kTolerancePx);
 		fourBarController.setContinuous(false);
 		fourBarController.setSetpoint(0.0);
-		fourBarController.enable();
+		fourBarController.disable();
 	}
 
 	private void setBrakeModeOn(boolean brakeOn) {
@@ -140,38 +139,35 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 	public void setPostion(double desiredEncoderPosition) {
 
 		double delta = Math.abs(fourBarController.getSetpoint() - desiredEncoderPosition);
-		if (delta > 0.001) {
+		if (delta > 1) {
 			fourBarController.setSetpoint(desiredEncoderPosition);
+			fourBarController.enable();
 
-			//isParking = (desiredEncoderPosition - kParkPosition) < 0.1;
+			isParking = (desiredEncoderPosition - kParkPosition) < 1;
 		}
-	}
-
-	// Make the arm safe and deactive PID control
-	public void park() {
-		// set the position to 0
-		setPostion(kParkPosition);
 	}
 
 	// PID controller output
 	public void pidWrite(double output) {
-		 SmartDashboard.putNumber("strafe pid output", output);
+		SmartDashboard.putNumber("strafe pid output", output);
 
 		// Take the output of the PID loop and add the offset to hold position
 		double command = output + getHoldingCommand();
 
 		// SmartDashboard.putNumber("strafe error", fourBarController.getError());
-//		if (isParking && (output < 0.001)) {
-//			// if parking and the output is 0 - the arm is all the way down
-//			// and the motor command 0
-//			command = 0.0;
-//		}
-		 setMotorOutput(command);
+		if (isParking && bottomLimitSwitch.get()) {
+			// if parking and the limit switch is activated - the arm is all the way down
+			// and the motor command 0
+			command = 0.0;
+			fourBarController.disable();
+
+		}
+		setMotorOutput(command);
 	}
 
 	private double getHoldingCommand() {
 		// for now this is just a constant
-		return 0.27  ;
+		return 0.27;
 	}
 
 	@Override
@@ -180,7 +176,7 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 		// fourBarController);MAX_SPEED
 
 		setDefaultCommand(new fourbar_w_joystick());
-		//setDefaultCommand(new fourbar_test());
+		// setDefaultCommand(new fourbar_test());
 	}
 
 	public void tunePID() {
