@@ -7,8 +7,6 @@
 
 package org.usfirst.frc.team811.robot;
 
-import org.usfirst.frc.team811.robot.subsystems.FourBar;
-
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
@@ -41,9 +39,6 @@ public class RobotMap implements Constants {
 	public static SpeedControllerGroup driveLeft;
 
 	public static Double SpeedCutoff;
-
-	// arm
-	public static FourBar fourbarArm;
 
 	// Intake
 	public static DoubleSolenoid gripperPneumatic;
@@ -81,7 +76,7 @@ public class RobotMap implements Constants {
 
 		driveTrain = new DifferentialDrive(driveLeft, driveRight);
 
-		SpeedCutoff = 0.7;
+		SpeedCutoff = ENCODER_HIGH;
 
 		// Gyro
 		ahrs = new AHRS(SPI.Port.kMXP);
@@ -89,8 +84,5 @@ public class RobotMap implements Constants {
 		// Intake
 		// gripperPneumatic = new DoubleSolenoid(COMPRESSOR_PORT, OPEN_PORT,
 		// CLOSE_PORT); // TODO
-
-		// fourbar
-
 	}
 }

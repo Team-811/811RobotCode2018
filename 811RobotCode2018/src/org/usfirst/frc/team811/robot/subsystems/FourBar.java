@@ -69,6 +69,7 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 	private DigitalInput bottomLimitSwitch;
 
 	private boolean isParking = true;
+	private boolean isParked = false;
 
 	public FourBar(int leftPort, int rightPort) {
 
@@ -87,6 +88,9 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 		invertMotors();
 
 		talonGroup = new SpeedControllerGroup(leftTalon, rightTalon);
+		
+		bottomLimitSwitch = new DigitalInput(FOUR_BAR_LIMIT_PORT);
+		bottomLimitSwitch.get();
 
 		setBrakeModeOn(true);
 
@@ -98,7 +102,7 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 		fourBarController.setAbsoluteTolerance(kTolerancePx);
 		fourBarController.setContinuous(false);
 		fourBarController.setSetpoint(0.0);
-		fourBarController.disable();
+		fourBarController.enable();
 	}
 
 	private void setBrakeModeOn(boolean brakeOn) {
@@ -144,6 +148,10 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 			fourBarController.enable();
 
 			isParking = (desiredEncoderPosition - kParkPosition) < 1;
+			if (!isParking)
+			{
+				isParked = false;
+			}
 		}
 	}
 
@@ -154,20 +162,15 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 		// Take the output of the PID loop and add the offset to hold position
 		double command = output + getHoldingCommand();
 
-		// SmartDashboard.putNumber("strafe error", fourBarController.getError());
-		if (isParking && bottomLimitSwitch.get()) {
-			// if parking and the limit switch is activated - the arm is all the way down
-			// and the motor command 0
-			command = 0.0;
-			fourBarController.disable();
-
+//		 SmartDashboard.putNumber("strafe error", fourBarController.getError());
+		if (isParking && (isParked || !bottomLimitSwitch.get())) {
+//			 if parking and the limit switch is activated - the arm is all the way down
+//			 and the motor command 0
+			command = 0;
+			isParked = true;
 		}
 
-		if (leftTalon.getSelectedSensorPosition(0) >= 6000) {
-			RobotMap.SpeedCutoff = 0.4;
-		} else {
-			RobotMap.SpeedCutoff = 0.7;
-		}
+		
 
 		setMotorOutput(command);
 	}
@@ -197,6 +200,10 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 
 	public void encoderValue() {
 		SmartDashboard.putNumber("Four Bar Encoder", leftTalon.getSelectedSensorPosition(0));
+	}
+	
+	public int encoderCount() {
+		return leftTalon.getSelectedSensorPosition(0);
 	}
 
 }

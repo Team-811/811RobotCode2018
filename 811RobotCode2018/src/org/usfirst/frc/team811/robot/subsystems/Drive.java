@@ -50,6 +50,10 @@ public class Drive extends Subsystem implements Constants {
 		if (moveVal >= RobotMap.SpeedCutoff) {
 			moveVal = RobotMap.SpeedCutoff;
 		}
+		
+		if (moveVal <= -RobotMap.SpeedCutoff) {
+			moveVal = -RobotMap.SpeedCutoff;
+		}
 
 		driveTrain.arcadeDrive(-1 * moveVal * SPEED_SCALE, turnVal * ROTATE_SCALE);
 		// driveTrain.arcadeDrive(-1 * moveVal * SPEED_SCALE, turnVal * SPEED_SCALE);

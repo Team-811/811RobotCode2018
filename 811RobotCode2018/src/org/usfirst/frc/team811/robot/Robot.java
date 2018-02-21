@@ -40,7 +40,7 @@ public class Robot extends TimedRobot implements Constants {
 	public static FieldData fieldData;
 
 	Command m_autonomousCommand;
-	SendableChooser<Command> m_chooser = new SendableChooser<>();
+	//SendableChooser<Command> m_chooser = new SendableChooser<>();
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -63,13 +63,12 @@ public class Robot extends TimedRobot implements Constants {
 
 		oi = new OI(); // has to go last
 		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", m_chooser);
+		//SmartDashboard.putData("Auto mode", m_chooser);
 
 		SmartDashboard.setDefaultNumber("PID Setpoint", 0);
 
 		motionProfile.generateLeftSwitchTrajectory();
 		motionProfile.generateRightSwitchTrajectory();
-
 	}
 
 	/**
@@ -156,6 +155,13 @@ public class Robot extends TimedRobot implements Constants {
 		SmartDashboard.putNumber("Left Drive", RobotMap.drivefrontleft.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("Right Drive", RobotMap.drivefrontright.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("Gyro", RobotMap.ahrs.getYaw());
+		fourBar.encoderValue();
+		
+		if (fourBar.encoderCount() >= 6000) {
+			RobotMap.SpeedCutoff = ENCODER_LOW;
+		} else {
+			RobotMap.SpeedCutoff = ENCODER_HIGH;
+		}
 	}
 
 	/**

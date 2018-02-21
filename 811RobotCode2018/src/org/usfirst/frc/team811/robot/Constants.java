@@ -17,6 +17,7 @@ public interface Constants {
 
 	int FOURBAR_LEFT_PORT = 4;
 	int FOURBAR_RIGHT_PORT = 5;
+	int FOUR_BAR_LIMIT_PORT = 0;
 	// end Can Bus Ids
 
 	// pnuematic controller ports
@@ -25,7 +26,7 @@ public interface Constants {
 
 	// variables
 
-	double SPEED_SCALE = 0.7;
+	double SPEED_SCALE = 0.8;
 	double ROTATE_SCALE = 0.6;
 	double DRIVE_DISTANCE_PER_PULSE = 1 / 9.5;
 	double GYRO_DIFFERENCE_VALUE = 10; // TODO
@@ -67,4 +68,7 @@ public interface Constants {
 	int WINCH_DOWN_BUTTON = 8;
 
 	int SHOOTER_DISTANCE_BUTTON = 4;
+	
+	double ENCODER_HIGH = 0.8; 
+	double ENCODER_LOW = 0.6; 
 }
