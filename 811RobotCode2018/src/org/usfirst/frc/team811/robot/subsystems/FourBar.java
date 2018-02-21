@@ -162,6 +162,13 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 			fourBarController.disable();
 
 		}
+
+		if (leftTalon.getSelectedSensorPosition(0) >= 6000) {
+			RobotMap.SpeedCutoff = 0.4;
+		} else {
+			RobotMap.SpeedCutoff = 0.7;
+		}
+
 		setMotorOutput(command);
 	}
 

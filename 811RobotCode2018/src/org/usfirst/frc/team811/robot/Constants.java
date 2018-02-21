@@ -59,7 +59,7 @@ public interface Constants {
 	int FOURBAR_AXIS = 1; // TODO
 
 	int CLIMBER_UP_BUTTON = 6;
-	int CLIMBER_DOWN_BUTTON = 5;   
+	int CLIMBER_DOWN_BUTTON = 5;
 
 	int SHOOTER_BUTTON = 3;
 	int PORT_LIFT_AXIS = 1;
