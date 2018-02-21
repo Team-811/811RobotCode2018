@@ -149,7 +149,7 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 
 	// PID controller output
 	public void pidWrite(double output) {
-		SmartDashboard.putNumber("strafe pid output", output);
+		SmartDashboard.putNumber("pid output", output);
 
 		// Take the output of the PID loop and add the offset to hold position
 		double command = output + getHoldingCommand();
