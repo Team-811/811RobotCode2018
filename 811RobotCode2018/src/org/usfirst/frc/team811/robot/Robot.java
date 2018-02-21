@@ -67,7 +67,8 @@ public class Robot extends TimedRobot implements Constants {
 
 		SmartDashboard.setDefaultNumber("PID Setpoint", 0);
 
-		motionProfile.generateDriveStraightTrajectory();
+		motionProfile.generateLeftSwitchTrajectory();
+		motionProfile.generateRightSwitchTrajectory();
 
 	}
 

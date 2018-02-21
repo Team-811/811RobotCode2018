@@ -264,18 +264,18 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 	public void generateLeftSwitchTrajectory() {
 
-		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(2.74, 2.66 * yDirectionCorrection, 0),
-				// new Waypoint(4, 2.7432 * yDirectionCorrection, 0), // Waypoint @ x=-2, y=-2,
+		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(1.25, 1.37 * yDirectionCorrection, Pathfinder.d2r(50)),
+				 new Waypoint(2.74, 2.66 * yDirectionCorrection, 0), // Waypoint @ x=-2, y=-2,
 				// exit angle=0
 				// radians
 
-				// new Waypoint(2,-2,Pathfinder.d2r(-90))
+				// new Waypoint(2,-2,Pathfinder.d2r(-90)) 
 		};
 
 		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
 				Trajectory.Config.SAMPLES_HIGH, 0.05, max_velocity, max_acceleration, max_jerk);
 		trajectoryLeft = Pathfinder.generate(points, config);
-		modifierLeft = new TankModifier(trajectory).modify(wheel_base_distance);
+		modifierLeft = new TankModifier(trajectoryLeft).modify(wheel_base_distance);
 
 		/*
 		 * for (int i = 0; i < trajectory.length(); i++) { Trajectory.Segment seg =
@@ -301,7 +301,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
 				Trajectory.Config.SAMPLES_HIGH, 0.05, max_velocity, max_acceleration, max_jerk);
 		trajectoryRight = Pathfinder.generate(points, config);
-		modifierRight = new TankModifier(trajectory).modify(wheel_base_distance);
+		modifierRight = new TankModifier(trajectoryRight).modify(wheel_base_distance);
 
 		/*
 		 * for (int i = 0; i < trajectory.length(); i++) { Trajectory.Segment seg =
