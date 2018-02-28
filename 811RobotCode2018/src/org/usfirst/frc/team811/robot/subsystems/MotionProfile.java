@@ -420,6 +420,8 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 	}
 
 	public void generateApproachTrajectory() {
+		
+		max_velocity = 0.25;
 
 		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0 * yDirectionCorrection, 0),
 				// new Waypoint(1.8288, 4.2672, 0), // Waypoint @ x=-2, y=-2, exit angle=0
@@ -442,6 +444,8 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 		 * 
 		 * }
 		 */
+		
+		max_velocity = 0.5;
 
 	}
 
