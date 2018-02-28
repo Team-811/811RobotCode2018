@@ -150,8 +150,8 @@ public class Robot extends TimedRobot implements Constants {
 		Scheduler.getInstance().run();
 		fourBar.encoderValue();
 		SmartDashboard.putNumber("Pid Output", fourBar.pidGet());
-		double setpoint = SmartDashboard.getNumber("PID Setpoint", 0);
-		fourBar.setPostion(setpoint);
+		//double setpoint = SmartDashboard.getNumber("PID Setpoint", 0);
+		//fourBar.setPostion(setpoint);
 		SmartDashboard.putNumber("Left Drive", RobotMap.drivefrontleft.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("Right Drive", RobotMap.drivefrontright.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("Gyro", RobotMap.ahrs.getYaw());
