@@ -236,7 +236,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 	public void generateTrajectory(Waypoint[] points, TankModifier tank, String name) {
 		
 		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
-				Trajectory.Config.SAMPLES_LOW, 0.05, max_velocity, max_acceleration, max_jerk);
+				Trajectory.Config.SAMPLES_HIGH, 0.05, max_velocity, max_acceleration, max_jerk);
 		
 		Trajectory trajectory = Pathfinder.generate(points, config);
 		printTrajectory(trajectory, name);
