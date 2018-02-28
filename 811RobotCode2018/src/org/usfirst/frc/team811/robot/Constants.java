@@ -17,8 +17,15 @@ public interface Constants {
 
 	int FOURBAR_LEFT_PORT = 4;
 	int FOURBAR_RIGHT_PORT = 5;
-	int FOUR_BAR_LIMIT_PORT = 0;
 	// end Can Bus Ids
+	
+	// Digital IOs
+	int FOUR_BAR_LIMIT_PORT = 0;
+	int ROTART_SWITCH_BIT0 = 1;
+	int ROTART_SWITCH_BIT1 = 2;
+	int ROTART_SWITCH_BIT2 = 3;
+	int ROTART_SWITCH_BIT3 = 4;
+
 
 	// pnuematic controller ports
 	int OPEN_PORT = 0;

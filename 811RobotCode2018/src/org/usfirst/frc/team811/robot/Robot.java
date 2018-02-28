@@ -155,6 +155,7 @@ public class Robot extends TimedRobot implements Constants {
 		SmartDashboard.putNumber("Left Drive", RobotMap.drivefrontleft.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("Right Drive", RobotMap.drivefrontright.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("Gyro", RobotMap.ahrs.getYaw());
+		SmartDashboard.putNumber("Rotary Switch", RobotMap.autoSelect.switchValue());
 		fourBar.encoderValue();
 		
 		if (fourBar.encoderCount() >= 6000) {

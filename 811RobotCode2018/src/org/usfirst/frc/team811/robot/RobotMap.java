@@ -7,6 +7,8 @@
 
 package org.usfirst.frc.team811.robot;
 
+import org.usfirst.frc.team811.robot.subsystems.RotarySwitch;
+
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
@@ -37,6 +39,7 @@ public class RobotMap implements Constants {
 	public static WPI_TalonSRX drivefrontleft;
 	public static WPI_TalonSRX drivebackleft;
 	public static SpeedControllerGroup driveLeft;
+	public static RotarySwitch autoSelect;
 
 	public static Double SpeedCutoff;
 
@@ -80,9 +83,10 @@ public class RobotMap implements Constants {
 
 		// Gyro
 		ahrs = new AHRS(SPI.Port.kMXP);
+		
+		autoSelect = new RotarySwitch();
 
 		// Intake
-		// gripperPneumatic = new DoubleSolenoid(COMPRESSOR_PORT, OPEN_PORT,
-		// CLOSE_PORT); // TODO
+		gripperPneumatic = new DoubleSolenoid(COMPRESSOR_PORT, OPEN_PORT, CLOSE_PORT); // TODO
 	}
 }
