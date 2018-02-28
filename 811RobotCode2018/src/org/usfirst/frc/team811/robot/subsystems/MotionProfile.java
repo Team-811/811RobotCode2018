@@ -50,9 +50,6 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 	EncoderFollower leftFollower;
 	EncoderFollower rightFollower;
-	Trajectory trajectoryLeft;
-	Trajectory trajectoryRight;
-	Trajectory trajectory;
 	TankModifier modifier;
 	TankModifier modifierLeft;
 	TankModifier modifierRight;
@@ -236,216 +233,120 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 	// different paths
 
+	public void generateTrajectory(Waypoint[] points, TankModifier tank, String name) {
+		
+		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
+				Trajectory.Config.SAMPLES_LOW, 0.05, max_velocity, max_acceleration, max_jerk);
+		
+		Trajectory trajectory = Pathfinder.generate(points, config);
+		printTrajectory(trajectory, name);
+		tank = new TankModifier(trajectory).modify(wheel_base_distance);
+	}
+	
 	public void generateDriveStraightTrajectory() {
 
-		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(4, 0 * yDirectionCorrection, 0),
-				// new Waypoint(1.8288, 4.2672, 0), // Waypoint @ x=-2, y=-2, exit angle=0
-				// radians
-
-				// new Waypoint(2,-2,Pathfinder.d2r(-90))
+		Waypoint[] points = new Waypoint[] 
+		{ 
+			new Waypoint(0, 0, 0), 
+			new Waypoint(4, 0 * yDirectionCorrection, 0)
 		};
 
-		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
-				Trajectory.Config.SAMPLES_HIGH, 0.05, max_velocity, max_acceleration, max_jerk);
-		trajectory = Pathfinder.generate(points, config);
-		modifier = new TankModifier(trajectory).modify(wheel_base_distance);
-
-		/*
-		 * for (int i = 0; i < trajectory.length(); i++) { Trajectory.Segment seg =
-		 * trajectory.get(i);
-		 * 
-		 * System.out.printf("%f,%f,%f,%f,%f,%f,%f,%f\n", seg.dt, seg.x, seg.y,
-		 * seg.position, seg.velocity, seg.acceleration, seg.jerk, seg.heading);
-		 * 
-		 * }
-		 */
-
+		generateTrajectory(points, modifier, "straight");
 	}
 
 	public void generateLeftSwitchTrajectory() {
 
-		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(1.25, 1.37 * yDirectionCorrection, Pathfinder.d2r(50)),
-				 new Waypoint(2.74, 2.66 * yDirectionCorrection, 0), // Waypoint @ x=-2, y=-2,
-				// exit angle=0
-				// radians
-
-				// new Waypoint(2,-2,Pathfinder.d2r(-90)) 
+		Waypoint[] points = new Waypoint[] 
+		{ 
+			new Waypoint(0, 0, 0), 
+			new Waypoint(1.25, 1.37 * yDirectionCorrection, Pathfinder.d2r(50)),
+			new Waypoint(2.74, 2.66 * yDirectionCorrection, 0) 
 		};
 
-		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
-				Trajectory.Config.SAMPLES_HIGH, 0.05, max_velocity, max_acceleration, max_jerk);
-		trajectoryLeft = Pathfinder.generate(points, config);
-		modifierLeft = new TankModifier(trajectoryLeft).modify(wheel_base_distance);
-
-		/*
-		 * for (int i = 0; i < trajectory.length(); i++) { Trajectory.Segment seg =
-		 * trajectory.get(i);
-		 * 
-		 * System.out.printf("%f,%f,%f,%f,%f,%f,%f,%f\n", seg.dt, seg.x, seg.y,
-		 * seg.position, seg.velocity, seg.acceleration, seg.jerk, seg.heading);
-		 * 
-		 * }
-		 */
-
+		generateTrajectory(points, modifierLeft, "left switch");
 	}
 
+	public void printTrajectory(Trajectory trajectory, String name)
+	{
+		for (int i = 0; i < trajectory.length(); i++) {
+			Trajectory.Segment seg = trajectory.get(i);
+		  
+			System.out.printf("\t\t// segmments for %s\n", name); 
+			System.out.print("\t\tTrajectory.Segment[] segs = new Trajectory.Segment[] {\n");
+			System.out.printf("\t\t\tnew Trajectory.Segment(%f,%f,%f,%f,%f,%f,%f,%f),\n", seg.dt, seg.x, seg.y,
+					seg.position, seg.velocity, seg.acceleration, seg.jerk, seg.heading);
+			System.out.print("\t\t};");
+		}		
+	}
+	
 	public void generateRightSwitchTrajectory() {
 
-		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(2.74, 0 * yDirectionCorrection, 0),
-				// new Waypoint(1.8288, 4.2672, 0), // Waypoint @ x=-2, y=-2, exit angle=0
-				// radians
-
-				// new Waypoint(2,-2,Pathfinder.d2r(-90))
+		Waypoint[] points = new Waypoint[] 
+		{ 
+			new Waypoint(0, 0, 0), 
+			new Waypoint(2.74, 0 * yDirectionCorrection, 0)
 		};
 
-		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
-				Trajectory.Config.SAMPLES_HIGH, 0.05, max_velocity, max_acceleration, max_jerk);
-		trajectoryRight = Pathfinder.generate(points, config);
-		modifierRight = new TankModifier(trajectoryRight).modify(wheel_base_distance);
-
-		/*
-		 * for (int i = 0; i < trajectory.length(); i++) { Trajectory.Segment seg =
-		 * trajectory.get(i);
-		 * 
-		 * System.out.printf("%f,%f,%f,%f,%f,%f,%f,%f\n", seg.dt, seg.x, seg.y,
-		 * seg.position, seg.velocity, seg.acceleration, seg.jerk, seg.heading);
-		 * 
-		 * }
-		 */
-
+		generateTrajectory(points, modifierRight, "right switch");
 	}
 
 	public void generateRightSwitchToCubePickupTrajectory() {
 
-		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0 * yDirectionCorrection, 0),
-				// new Waypoint(1.8288, 4.2672, 0), // Waypoint @ x=-2, y=-2, exit angle=0
-				// radians
-
-				// new Waypoint(2,-2,Pathfinder.d2r(-90))
+		Waypoint[] points = new Waypoint[] 			
+		{ 
+			new Waypoint(0, 0, 0), 
+			new Waypoint(5, 0 * yDirectionCorrection, 0)
 		};
 
-		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
-				Trajectory.Config.SAMPLES_HIGH, 0.05, max_velocity, max_acceleration, max_jerk);
-		trajectory = Pathfinder.generate(points, config);
-		modifier = new TankModifier(trajectory).modify(wheel_base_distance);
-
-		/*
-		 * for (int i = 0; i < trajectory.length(); i++) { Trajectory.Segment seg =
-		 * trajectory.get(i);
-		 * 
-		 * System.out.printf("%f,%f,%f,%f,%f,%f,%f,%f\n", seg.dt, seg.x, seg.y,
-		 * seg.position, seg.velocity, seg.acceleration, seg.jerk, seg.heading);
-		 * 
-		 * }
-		 */
-
+		generateTrajectory(points, modifier, "right cub pickup");
 	}
 
 	public void generateLeftSwitchToCubePickupTrajectory() {
-
-		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0 * yDirectionCorrection, 0),
-				// new Waypoint(1.8288, 4.2672, 0), // Waypoint @ x=-2, y=-2, exit angle=0
-				// radians
-
-				// new Waypoint(2,-2,Pathfinder.d2r(-90))
+		Waypoint[] points = new Waypoint[] 			
+		{ 
+			new Waypoint(0, 0, 0), 
+			new Waypoint(5, 0 * yDirectionCorrection, 0)
 		};
 
-		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
-				Trajectory.Config.SAMPLES_HIGH, 0.05, max_velocity, max_acceleration, max_jerk);
-		trajectory = Pathfinder.generate(points, config);
-		modifier = new TankModifier(trajectory).modify(wheel_base_distance);
-
-		/*
-		 * for (int i = 0; i < trajectory.length(); i++) { Trajectory.Segment seg =
-		 * trajectory.get(i);
-		 * 
-		 * System.out.printf("%f,%f,%f,%f,%f,%f,%f,%f\n", seg.dt, seg.x, seg.y,
-		 * seg.position, seg.velocity, seg.acceleration, seg.jerk, seg.heading);
-		 * 
-		 * }
-		 */
-
+		generateTrajectory(points, modifier, "left cube pickup");
 	}
 
 	public void generateCubePickupTrajectory() {
 
-		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0 * yDirectionCorrection, 0),
-				// new Waypoint(1.8288, 4.2672, 0), // Waypoint @ x=-2, y=-2, exit angle=0
-				// radians
-
-				// new Waypoint(2,-2,Pathfinder.d2r(-90))
+		Waypoint[] points = new Waypoint[] 			
+		{ 
+			new Waypoint(0, 0, 0), 
+			new Waypoint(5, 0 * yDirectionCorrection, 0)
 		};
 
-		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
-				Trajectory.Config.SAMPLES_HIGH, 0.05, max_velocity, max_acceleration, max_jerk);
-		trajectory = Pathfinder.generate(points, config);
-		modifier = new TankModifier(trajectory).modify(wheel_base_distance);
-
-		/*
-		 * for (int i = 0; i < trajectory.length(); i++) { Trajectory.Segment seg =
-		 * trajectory.get(i);
-		 * 
-		 * System.out.printf("%f,%f,%f,%f,%f,%f,%f,%f\n", seg.dt, seg.x, seg.y,
-		 * seg.position, seg.velocity, seg.acceleration, seg.jerk, seg.heading);
-		 * 
-		 * }
-		 */
-
+		generateTrajectory(points, modifier, "cube pickup");
 	}
 
 	public void generateScaleTrajectory() {
 
-		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0 * yDirectionCorrection, 0),
-				// new Waypoint(1.8288, 4.2672, 0), // Waypoint @ x=-2, y=-2, exit angle=0
-				// radians
-
-				// new Waypoint(2,-2,Pathfinder.d2r(-90))
+		Waypoint[] points = new Waypoint[] 			
+		{ 
+			new Waypoint(0, 0, 0), 
+			new Waypoint(5, 0 * yDirectionCorrection, 0)
 		};
 
-		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
-				Trajectory.Config.SAMPLES_HIGH, 0.05, max_velocity, max_acceleration, max_jerk);
-		trajectory = Pathfinder.generate(points, config);
-		modifier = new TankModifier(trajectory).modify(wheel_base_distance);
-
-		/*
-		 * for (int i = 0; i < trajectory.length(); i++) { Trajectory.Segment seg =
-		 * trajectory.get(i);
-		 * 
-		 * System.out.printf("%f,%f,%f,%f,%f,%f,%f,%f\n", seg.dt, seg.x, seg.y,
-		 * seg.position, seg.velocity, seg.acceleration, seg.jerk, seg.heading);
-		 * 
-		 * }
-		 */
-
+		generateTrajectory(points, modifier, "scale");
 	}
 
 	public void generateApproachTrajectory() {
 		
+		double current_max = max_velocity;
 		max_velocity = 0.25;
 
-		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0 * yDirectionCorrection, 0),
-				// new Waypoint(1.8288, 4.2672, 0), // Waypoint @ x=-2, y=-2, exit angle=0
-				// radians
-
-				// new Waypoint(2,-2,Pathfinder.d2r(-90))
+		Waypoint[] points = new Waypoint[] 			
+		{ 
+			new Waypoint(0, 0, 0), 
+			new Waypoint(5, 0 * yDirectionCorrection, 0)
 		};
 
-		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
-				Trajectory.Config.SAMPLES_HIGH, 0.05, max_velocity, max_acceleration, max_jerk);
-		trajectory = Pathfinder.generate(points, config);
-		modifier = new TankModifier(trajectory).modify(wheel_base_distance);
-
-		/*
-		 * for (int i = 0; i < trajectory.length(); i++) { Trajectory.Segment seg =
-		 * trajectory.get(i);
-		 * 
-		 * System.out.printf("%f,%f,%f,%f,%f,%f,%f,%f\n", seg.dt, seg.x, seg.y,
-		 * seg.position, seg.velocity, seg.acceleration, seg.jerk, seg.heading);
-		 * 
-		 * }
-		 */
+		generateTrajectory(points, modifier, "approach");
 		
-		max_velocity = 0.5;
+		max_velocity = current_max;
 
 	}
 
