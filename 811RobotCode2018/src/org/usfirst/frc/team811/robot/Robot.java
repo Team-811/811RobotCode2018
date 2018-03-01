@@ -9,6 +9,7 @@ package org.usfirst.frc.team811.robot;
 
 import org.usfirst.frc.team811.robot.commands.auto_drive_left_switch;
 import org.usfirst.frc.team811.robot.commands.auto_drive_right_switch;
+import org.usfirst.frc.team811.robot.commands.auto_drive_straight;
 import org.usfirst.frc.team811.robot.subsystems.Drive;
 import org.usfirst.frc.team811.robot.subsystems.FieldData;
 import org.usfirst.frc.team811.robot.subsystems.FourBar;
@@ -73,9 +74,10 @@ public class Robot extends TimedRobot implements Constants {
 
 		SmartDashboard.setDefaultNumber("PID Setpoint", 0);
 
-		motionProfile.generateLeftSwitchTrajectory();
-		motionProfile.generateRightSwitchTrajectory();
-		//motionProfile.generateDriveStraightTrajectory();
+			motionProfile.generateDriveStraightTrajectory();
+			motionProfile.generateLeftSwitchTrajectory();
+			motionProfile.generateRightSwitchTrajectory();
+		
 	}
 
 	/**
@@ -119,7 +121,28 @@ public class Robot extends TimedRobot implements Constants {
 		 */
 
 		// schedule the autonomous command (example)
+		
+		System.out.println(RobotMap.autoSelect.switchValue());
 
+		if(RobotMap.autoSelect.switchValue() == 0) {
+			//Do nothing
+		}
+		if(RobotMap.autoSelect.switchValue() == 1) {
+			m_autonomousCommand = new auto_drive_straight();
+			m_autonomousCommand.start();
+		}
+		if(RobotMap.autoSelect.switchValue() == 2) {
+			if (switchSide == -1) {
+				m_autonomousCommand = new auto_drive_left_switch();
+				m_autonomousCommand.start();
+			} else {
+				m_autonomousCommand = new auto_drive_right_switch();
+				m_autonomousCommand.start();
+			}
+		}
+		
+		
+		
 		if (switchSide == -1) {
 			m_autonomousCommand = new auto_drive_left_switch();
 			m_autonomousCommand.start();

@@ -57,7 +57,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 	double l;
 	double r;
 
-	static double max_velocity = 0.5;
+	static double max_velocity = 0.45;
 	static double max_acceleration = 0.5;
 	static double max_jerk = 60.0;
 	static double wheel_diameter = 0.15;
@@ -68,8 +68,8 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 	static double acceleration_gain = 0.0;
 	// TODO
 	static double absolute_max_velocity = 3.612;
-	static double gyro_correction_power = 0.8;
-	static double yDirectionCorrection = 0.87;
+	static double gyro_correction_power = 0.7;
+	static double yDirectionCorrection = 0.9;
 
 	int leftEncoderStartingPosition;
 	int rightEncoderStartingPosition;
@@ -247,13 +247,13 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 	}
 	
 
-	private static void generateTrajectory(Waypoint[] points, TankModifier tank, String name) {
+	private static TankModifier generateTrajectory(Waypoint[] points, String name) {
 		
 		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
 				Trajectory.Config.SAMPLES_HIGH, 0.05, max_velocity, max_acceleration, max_jerk);
 		
 		Trajectory trajectory = Pathfinder.generate(points, config);
-		tank = new TankModifier(trajectory).modify(wheel_base_distance);
+		return new TankModifier(trajectory).modify(wheel_base_distance);
 	}
 	
 	private static void generateAndPrintTrajectory(Waypoint[] points, String name) {
@@ -305,7 +305,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 			new Waypoint(4, 0 * yDirectionCorrection, 0)
 		};
 
-		generateTrajectory(points, modifier, "straight");
+		modifier = generateTrajectory(points, "straight");
 	}
 
 	public void generateLeftSwitchTrajectory() {
@@ -313,11 +313,11 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 		Waypoint[] points = new Waypoint[] 
 		{ 
 			new Waypoint(0, 0, 0), 
-			new Waypoint(1.25, 1.37 * yDirectionCorrection, Pathfinder.d2r(50)),
-			new Waypoint(2.74, 2.66 * yDirectionCorrection, 0) 
+			//new Waypoint(1.3, 1.37 * yDirectionCorrection, Pathfinder.d2r(50)),
+			new Waypoint(3, 2.66 * yDirectionCorrection, 0) 
 		};
 
-		generateTrajectory(points, modifierLeft, "left switch");
+		modifierLeft = generateTrajectory(points, "left switch");
 	}
 
 	public void generateRightSwitchTrajectory() {
@@ -328,9 +328,10 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 			new Waypoint(2.74, 0 * yDirectionCorrection, 0)
 		};
 
-		generateTrajectory(points, modifierRight, "right switch");
+		modifierRight = generateTrajectory(points, "right switch");
 	}
 
+	/*
 	public void generateRightSwitchToCubePickupTrajectory() {
 
 		Waypoint[] points = new Waypoint[] 			
@@ -390,7 +391,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 		max_velocity = current_max;
 
 	}
-
+*/
 	/*
 		// segmments for staight
 		Trajectory.Segment[] segs = new Trajectory.Segment[] {
