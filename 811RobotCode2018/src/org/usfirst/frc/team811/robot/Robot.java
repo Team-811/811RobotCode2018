@@ -49,6 +49,12 @@ public class Robot extends TimedRobot implements Constants {
 	@Override
 	public void robotInit() {
 
+		/*
+		MotionProfile.g1();
+		MotionProfile.g2();
+		MotionProfile.g3();
+		*/
+	
 		robotMap = new RobotMap();
 		robotMap.init();
 
@@ -69,7 +75,7 @@ public class Robot extends TimedRobot implements Constants {
 
 		motionProfile.generateLeftSwitchTrajectory();
 		motionProfile.generateRightSwitchTrajectory();
-		motionProfile.generateDriveStraightTrajectory();
+		//motionProfile.generateDriveStraightTrajectory();
 	}
 
 	/**

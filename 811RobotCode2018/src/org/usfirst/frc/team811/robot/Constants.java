@@ -33,8 +33,8 @@ public interface Constants {
 
 	// variables
 
-	double SPEED_SCALE = 0.8;
-	double ROTATE_SCALE = 0.6;
+	double SPEED_SCALE = 0.85;
+	double ROTATE_SCALE = 0.53;
 	double DRIVE_DISTANCE_PER_PULSE = 1 / 9.5;
 	double GYRO_DIFFERENCE_VALUE = 10; // TODO
 
@@ -76,6 +76,6 @@ public interface Constants {
 
 	int SHOOTER_DISTANCE_BUTTON = 4;
 	
-	double ENCODER_HIGH = 0.8; 
+	double ENCODER_HIGH = 0.85; 
 	double ENCODER_LOW = 0.6; 
 }

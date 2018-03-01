@@ -247,14 +247,22 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 	}
 	
 
-	public static void generateTrajectory(Waypoint[] points, TankModifier tank, String name) {
+	private static void generateTrajectory(Waypoint[] points, TankModifier tank, String name) {
+		
+		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
+				Trajectory.Config.SAMPLES_HIGH, 0.05, max_velocity, max_acceleration, max_jerk);
+		
+		Trajectory trajectory = Pathfinder.generate(points, config);
+		tank = new TankModifier(trajectory).modify(wheel_base_distance);
+	}
+	
+	private static void generateAndPrintTrajectory(Waypoint[] points, String name) {
 		
 		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
 				Trajectory.Config.SAMPLES_HIGH, 0.05, max_velocity, max_acceleration, max_jerk);
 		
 		Trajectory trajectory = Pathfinder.generate(points, config);
 		printTrajectory(trajectory, name);
-		tank = new TankModifier(trajectory).modify(wheel_base_distance);
 	}
 	
 	public static void g1()
@@ -265,8 +273,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 			new Waypoint(4, 0, 0)
 		};
 
-		TankModifier tank = null;
-		generateTrajectory(points, tank, "staight");	
+		generateAndPrintTrajectory(points, "staight");	
 	}
 	public static void g2()
 	{
@@ -277,8 +284,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 				new Waypoint(2.74, 2.66 * yDirectionCorrection, 0) 
 		};
 
-		TankModifier tank = null;
-		generateTrajectory(points, tank, "left switch");	
+		generateAndPrintTrajectory(points, "left switch");	
 	}
 	public static void g3()
 	{
@@ -288,8 +294,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 				new Waypoint(2.74, 0 * yDirectionCorrection, 0)
 		};
 
-		TankModifier tank = null;
-		generateTrajectory(points, tank, "right switch");	
+		generateAndPrintTrajectory(points, "right switch");	
 	}
 	
 	public void generateDriveStraightTrajectory() {

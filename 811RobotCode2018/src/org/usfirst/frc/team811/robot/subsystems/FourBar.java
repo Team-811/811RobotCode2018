@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutput {
 
-	private double MAX_SPEED = 0.45;
+	private double MAX_SPEED = 0.5;
 
 	// PIDSource begin implementation
 	PIDSourceType type = PIDSourceType.kDisplacement;
@@ -57,7 +57,7 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 	private double kF = 0.00; // look this up
 	private double kTolerancePx = 100;
 	private double kParkPosition = 0.0;
-	private double kJoystickMultiplier = 10;
+	private double kJoystickMultiplier = 20;
 
 	Joystick joy2 = RobotMap.joystick2;
 
@@ -133,7 +133,7 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 		double setpointVal = fourBarController.getSetpoint();
 
 		if ((joy2.getRawAxis(FOURBAR_AXIS) > .2) || (joy2.getRawAxis(FOURBAR_AXIS) < -.2)) {
-			setpointVal = setpointVal + (joy2.getRawAxis(FOURBAR_AXIS) * kJoystickMultiplier);
+			setpointVal = setpointVal + (-joy2.getRawAxis(FOURBAR_AXIS) * kJoystickMultiplier);
 			fourBarController.setSetpoint(setpointVal);
 		}
 
