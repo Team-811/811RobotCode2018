@@ -69,6 +69,7 @@ public class Robot extends TimedRobot implements Constants {
 
 		motionProfile.generateLeftSwitchTrajectory();
 		motionProfile.generateRightSwitchTrajectory();
+		motionProfile.generateDriveStraightTrajectory();
 	}
 
 	/**
@@ -157,6 +158,7 @@ public class Robot extends TimedRobot implements Constants {
 		SmartDashboard.putNumber("Gyro", RobotMap.ahrs.getYaw());
 		SmartDashboard.putNumber("Rotary Switch", RobotMap.autoSelect.switchValue());
 		fourBar.encoderValue();
+		fourBar.desiredSetPointValue();
 		
 		if (fourBar.encoderCount() >= 6000) {
 			RobotMap.SpeedCutoff = ENCODER_LOW;

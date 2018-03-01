@@ -202,6 +202,10 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 		SmartDashboard.putNumber("Four Bar Encoder", leftTalon.getSelectedSensorPosition(0));
 	}
 	
+	public void desiredSetPointValue() {
+		SmartDashboard.putNumber("PID Set Point", fourBarController.getSetpoint());
+	}
+	
 	public int encoderCount() {
 		return leftTalon.getSelectedSensorPosition(0);
 	}
