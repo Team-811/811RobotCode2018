@@ -74,9 +74,27 @@ public class Robot extends TimedRobot implements Constants {
 
 		SmartDashboard.setDefaultNumber("PID Setpoint", 0);
 
+		if(RobotMap.autoSelect.switchValue() == 0) {
+			//Do nothing
+		}
+		if(RobotMap.autoSelect.switchValue() == 1) {
 			motionProfile.generateDriveStraightTrajectory();
+		}
+		if(RobotMap.autoSelect.switchValue() == 2) {
 			motionProfile.generateLeftSwitchTrajectory();
 			motionProfile.generateRightSwitchTrajectory();
+		}
+		/*
+		if(RobotMap.autoSelect.switchValue() == 3) {
+			motionProfile.generateScaleLeftTrajectory();
+			motionProfile.generateApproachTrajectory();
+		}
+		if(RobotMap.autoSelect.switchValue() == 4) {
+			motionProfile.generateScaleRightTrajectory();
+			motionProfile.generateApproachTrajectory();
+		}
+		*/
+		Robot.intake.open();
 		
 	}
 
@@ -140,16 +158,27 @@ public class Robot extends TimedRobot implements Constants {
 				m_autonomousCommand.start();
 			}
 		}
-		
-		
-		
-		if (switchSide == -1) {
-			m_autonomousCommand = new auto_drive_left_switch();
-			m_autonomousCommand.start();
-		} else {
-			m_autonomousCommand = new auto_drive_right_switch();
-			m_autonomousCommand.start();
+		//TODO
+		/*
+		if(RobotMap.autoSelect.switchValue() == 3) {
+			if (switchSide == -1) {
+				m_autonomousCommand = new auto_drive_left_switch();
+				m_autonomousCommand.start();
+			} else {
+				m_autonomousCommand = new auto_drive_right_switch();
+				m_autonomousCommand.start();
+			}
 		}
+		if(RobotMap.autoSelect.switchValue() == 4) {
+			if (switchSide == -1) {
+				m_autonomousCommand = new auto_drive_left_switch();
+				m_autonomousCommand.start();
+			} else {
+				m_autonomousCommand = new auto_drive_right_switch();
+				m_autonomousCommand.start();
+		}
+		}
+		*/
 
 	}
 
@@ -191,8 +220,10 @@ public class Robot extends TimedRobot implements Constants {
 		
 		if (fourBar.encoderCount() >= 6000) {
 			RobotMap.SpeedCutoff = ENCODER_LOW;
-		} else {
+		} else if(fourBar.encoderCount() >= 1000){
 			RobotMap.SpeedCutoff = ENCODER_HIGH;
+		} else {
+			RobotMap.SpeedCutoff = ENCODER_DOWN;
 		}
 	}
 

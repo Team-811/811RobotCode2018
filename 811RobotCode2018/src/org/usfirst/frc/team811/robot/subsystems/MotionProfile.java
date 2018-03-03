@@ -53,6 +53,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 	TankModifier modifier;
 	TankModifier modifierLeft;
 	TankModifier modifierRight;
+	TankModifier modifier1;
 
 	double l;
 	double r;
@@ -302,7 +303,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 		Waypoint[] points = new Waypoint[] 
 		{ 
 			new Waypoint(0, 0, 0), 
-			new Waypoint(4, 0 * yDirectionCorrection, 0)
+			new Waypoint(5.5, 0 * yDirectionCorrection, 0)
 		};
 
 		modifier = generateTrajectory(points, "straight");
@@ -330,8 +331,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 		modifierRight = generateTrajectory(points, "right switch");
 	}
-
-	/*
+/*	
 	public void generateRightSwitchToCubePickupTrajectory() {
 
 		Waypoint[] points = new Waypoint[] 			
@@ -363,8 +363,8 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 		generateTrajectory(points, modifier, "cube pickup");
 	}
-
-	public void generateScaleTrajectory() {
+*/
+	public void generateScaleLeftTrajectory() {
 
 		Waypoint[] points = new Waypoint[] 			
 		{ 
@@ -372,7 +372,18 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 			new Waypoint(5, 0 * yDirectionCorrection, 0)
 		};
 
-		generateTrajectory(points, modifier, "scale");
+		modifier = generateTrajectory(points, "scale");
+	}
+	
+	public void generateScaleRightTrajectory() {
+
+		Waypoint[] points = new Waypoint[] 			
+		{ 
+			new Waypoint(0, 0, 0), 
+			new Waypoint(5, 0 * yDirectionCorrection, 0)
+		};
+
+		modifier = generateTrajectory(points, "scale");
 	}
 
 	public void generateApproachTrajectory() {
@@ -383,15 +394,15 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 		Waypoint[] points = new Waypoint[] 			
 		{ 
 			new Waypoint(0, 0, 0), 
-			new Waypoint(5, 0 * yDirectionCorrection, 0)
+			new Waypoint(2, 0 * yDirectionCorrection, 0)
 		};
 
-		generateTrajectory(points, modifier, "approach");
+		modifier1 = generateTrajectory(points, "approach");
 		
 		max_velocity = current_max;
 
 	}
-*/
+
 	/*
 		// segmments for staight
 		Trajectory.Segment[] segs = new Trajectory.Segment[] {
