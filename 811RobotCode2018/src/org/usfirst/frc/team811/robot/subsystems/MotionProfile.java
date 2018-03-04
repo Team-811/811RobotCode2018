@@ -348,14 +348,16 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 	// TODO
 	public void generateScaleLeftTrajectory() {
 
-		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0 * yDirectionCorrection, 0) };
+		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
+				new Waypoint(6.631, 0 * yDirectionCorrection, Pathfinder.d2r(-35)) };
 
 		modifier = generateTrajectory(points, "scale");
 	}
 
 	public void generateScaleRightTrajectory() {
 
-		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0 * yDirectionCorrection, 0) };
+		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
+				new Waypoint(6.631, 0 * yDirectionCorrection, Pathfinder.d2r(35)) };
 
 		modifier = generateTrajectory(points, "scale");
 	}
@@ -365,7 +367,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 		double current_max = max_velocity;
 		max_velocity = 0.25;
 
-		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(2, 0 * yDirectionCorrection, 0) };
+		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(2.05, 0 * yDirectionCorrection, 0) };
 
 		modifier1 = generateTrajectory(points, "approach");
 
