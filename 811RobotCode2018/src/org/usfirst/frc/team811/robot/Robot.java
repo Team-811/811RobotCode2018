@@ -10,6 +10,8 @@ package org.usfirst.frc.team811.robot;
 import org.usfirst.frc.team811.robot.commands.auto_drive_left_switch;
 import org.usfirst.frc.team811.robot.commands.auto_drive_right_switch;
 import org.usfirst.frc.team811.robot.commands.auto_drive_straight;
+import org.usfirst.frc.team811.robot.commands.auto_scale_comp;
+import org.usfirst.frc.team811.robot.commands.auto_scale_non_scale_side;
 import org.usfirst.frc.team811.robot.subsystems.Drive;
 import org.usfirst.frc.team811.robot.subsystems.FieldData;
 import org.usfirst.frc.team811.robot.subsystems.FourBar;
@@ -19,7 +21,6 @@ import org.usfirst.frc.team811.robot.subsystems.MotionProfile;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -41,7 +42,7 @@ public class Robot extends TimedRobot implements Constants {
 	public static FieldData fieldData;
 
 	Command m_autonomousCommand;
-	//SendableChooser<Command> m_chooser = new SendableChooser<>();
+	// SendableChooser<Command> m_chooser = new SendableChooser<>();
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -51,11 +52,9 @@ public class Robot extends TimedRobot implements Constants {
 	public void robotInit() {
 
 		/*
-		MotionProfile.g1();
-		MotionProfile.g2();
-		MotionProfile.g3();
-		*/
-	
+		 * MotionProfile.g1(); MotionProfile.g2(); MotionProfile.g3();
+		 */
+
 		robotMap = new RobotMap();
 		robotMap.init();
 
@@ -70,32 +69,32 @@ public class Robot extends TimedRobot implements Constants {
 
 		oi = new OI(); // has to go last
 		// chooser.addObject("My Auto", new MyAutoCommand());
-		//SmartDashboard.putData("Auto mode", m_chooser);
+		// SmartDashboard.putData("Auto mode", m_chooser);
 
 		SmartDashboard.setDefaultNumber("PID Setpoint", 0);
 
-		if(RobotMap.autoSelect.switchValue() == 0) {
-			//Do nothing
+		if (RobotMap.autoSelect.switchValue() == 0) {
+			// Do nothing
 		}
-		if(RobotMap.autoSelect.switchValue() == 1) {
+		if (RobotMap.autoSelect.switchValue() == 1) {
 			motionProfile.generateDriveStraightTrajectory();
 		}
-		if(RobotMap.autoSelect.switchValue() == 2) {
+		if (RobotMap.autoSelect.switchValue() == 2) {
 			motionProfile.generateLeftSwitchTrajectory();
 			motionProfile.generateRightSwitchTrajectory();
 		}
-		/*
-		if(RobotMap.autoSelect.switchValue() == 3) {
+
+		if (RobotMap.autoSelect.switchValue() == 3) { // Left Side
 			motionProfile.generateScaleLeftTrajectory();
-			motionProfile.generateApproachTrajectory();
+			motionProfile.generateApproachScaleTrajectory();
 		}
-		if(RobotMap.autoSelect.switchValue() == 4) {
+		if (RobotMap.autoSelect.switchValue() == 4) { // Right Side
 			motionProfile.generateScaleRightTrajectory();
-			motionProfile.generateApproachTrajectory();
+			motionProfile.generateApproachScaleTrajectory();
 		}
-		*/
+
 		Robot.intake.open();
-		
+
 	}
 
 	/**
@@ -130,6 +129,7 @@ public class Robot extends TimedRobot implements Constants {
 		// m_autonomousCommand = m_chooser.getSelected();
 
 		int switchSide = Robot.fieldData.getSwitchPosition();
+		int scaleSide = Robot.fieldData.getScalePosition();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
@@ -139,17 +139,17 @@ public class Robot extends TimedRobot implements Constants {
 		 */
 
 		// schedule the autonomous command (example)
-		
+
 		System.out.println(RobotMap.autoSelect.switchValue());
 
-		if(RobotMap.autoSelect.switchValue() == 0) {
-			//Do nothing
+		if (RobotMap.autoSelect.switchValue() == 0) {
+			// Do nothing
 		}
-		if(RobotMap.autoSelect.switchValue() == 1) {
+		if (RobotMap.autoSelect.switchValue() == 1) {
 			m_autonomousCommand = new auto_drive_straight();
 			m_autonomousCommand.start();
 		}
-		if(RobotMap.autoSelect.switchValue() == 2) {
+		if (RobotMap.autoSelect.switchValue() == 2) {
 			if (switchSide == -1) {
 				m_autonomousCommand = new auto_drive_left_switch();
 				m_autonomousCommand.start();
@@ -158,27 +158,26 @@ public class Robot extends TimedRobot implements Constants {
 				m_autonomousCommand.start();
 			}
 		}
-		//TODO
-		/*
-		if(RobotMap.autoSelect.switchValue() == 3) {
-			if (switchSide == -1) {
-				m_autonomousCommand = new auto_drive_left_switch();
+		// TODO
+
+		if (RobotMap.autoSelect.switchValue() == 3) { // Left Side
+			if (scaleSide == -1) {
+				m_autonomousCommand = new auto_scale_comp();
 				m_autonomousCommand.start();
 			} else {
-				m_autonomousCommand = new auto_drive_right_switch();
+				m_autonomousCommand = new auto_scale_non_scale_side();
 				m_autonomousCommand.start();
 			}
 		}
-		if(RobotMap.autoSelect.switchValue() == 4) {
-			if (switchSide == -1) {
-				m_autonomousCommand = new auto_drive_left_switch();
+		if (RobotMap.autoSelect.switchValue() == 4) { // Right Side
+			if (scaleSide == -1) {
+				m_autonomousCommand = new auto_scale_non_scale_side();
 				m_autonomousCommand.start();
 			} else {
-				m_autonomousCommand = new auto_drive_right_switch();
+				m_autonomousCommand = new auto_scale_comp();
 				m_autonomousCommand.start();
+			}
 		}
-		}
-		*/
 
 	}
 
@@ -209,18 +208,18 @@ public class Robot extends TimedRobot implements Constants {
 		Scheduler.getInstance().run();
 		fourBar.encoderValue();
 		SmartDashboard.putNumber("Pid Output", fourBar.pidGet());
-		//double setpoint = SmartDashboard.getNumber("PID Setpoint", 0);
-		//fourBar.setPostion(setpoint);
+		// double setpoint = SmartDashboard.getNumber("PID Setpoint", 0);
+		// fourBar.setPostion(setpoint);
 		SmartDashboard.putNumber("Left Drive", RobotMap.drivefrontleft.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("Right Drive", RobotMap.drivefrontright.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("Gyro", RobotMap.ahrs.getYaw());
 		SmartDashboard.putNumber("Rotary Switch", RobotMap.autoSelect.switchValue());
 		fourBar.encoderValue();
 		fourBar.desiredSetPointValue();
-		
+
 		if (fourBar.encoderCount() >= 6000) {
 			RobotMap.SpeedCutoff = ENCODER_LOW;
-		} else if(fourBar.encoderCount() >= 1000){
+		} else if (fourBar.encoderCount() >= 1000) {
 			RobotMap.SpeedCutoff = ENCODER_HIGH;
 		} else {
 			RobotMap.SpeedCutoff = ENCODER_DOWN;

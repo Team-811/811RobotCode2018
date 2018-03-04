@@ -7,12 +7,12 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class fourbar_up extends Command {
+public class fourbar_high_scale extends Command {
 
-    public fourbar_up() {
+    public fourbar_high_scale() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-		requires(Robot.fourBar);
+    	requires(Robot.fourBar);
     }
 
     // Called just before this Command runs the first time
@@ -21,7 +21,7 @@ public class fourbar_up extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.fourBar.setPostion(7000);
+    	Robot.fourBar.setPostion(9000);
     	Robot.intake.close();
     }
 
