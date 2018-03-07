@@ -200,14 +200,6 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 	public void followTrajectory(boolean reverse) {
 
-		int changeDirection;
-
-		if (reverse) {
-			changeDirection = -1;
-		} else {
-			changeDirection = 1;
-		}
-
 		int leftEncoderPosition = leftEncoderStartingPosition
 				+ Math.abs(leftEncoderStartingPosition - frontleft.getSelectedSensorPosition(0));
 		int rightEncoderPosition = rightEncoderStartingPosition
@@ -222,7 +214,12 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 		double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
 		double turn = gyro_correction_power * (-1.0 / 80.0) * angleDifference;
 
-		driveTrain.tankDrive((l * changeDirection) + turn, (r * changeDirection) - turn);
+		if (reverse) {
+			driveTrain.tankDrive(l + turn, r - turn);
+		} else {
+			driveTrain.tankDrive(-r + turn, -l - turn);
+		}
+
 		// driveTrain.tankDrive((l * changeDirection), (r * changeDirection) );
 
 	}
