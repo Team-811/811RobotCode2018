@@ -17,7 +17,7 @@ public class auto_drive_straight extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.motionProfile.configureFollower();
+    	Robot.motionProfile.configureFollower(1);
     	
     }
 

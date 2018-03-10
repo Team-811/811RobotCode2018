@@ -9,15 +9,23 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class auto_drive_scale extends Command {
 
-    public auto_drive_scale() {
+	int modifierNumber;
+	
+    public auto_drive_scale(boolean leftSide) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.motionProfile);
+    	
+    	if(leftSide) {
+    		modifierNumber = 7;
+    	}else {
+    		modifierNumber = 8;
+    	}
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.motionProfile.configureFollower();
+    	Robot.motionProfile.configureFollower(modifierNumber);
     }
 
     // Called repeatedly when this Command is scheduled to run

@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class auto_rotate extends Command {
 
 	double angle;
+	boolean isFinished = false;
 
 	public auto_rotate(double setAngle) {
 		// Use requires() here to declare subsystem dependencies
@@ -31,7 +32,12 @@ public class auto_rotate extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return angle == RobotMap.ahrs.getAngle();
+		
+		if(angle - RobotMap.ahrs.getAngle() <= 1 && angle - RobotMap.ahrs.getAngle() >= -1) {
+			isFinished = true;
+		}
+		
+		return isFinished;
 	}
 
 	// Called once after isFinished returns true

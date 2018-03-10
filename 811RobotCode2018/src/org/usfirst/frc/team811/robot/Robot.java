@@ -7,11 +7,15 @@
 
 package org.usfirst.frc.team811.robot;
 
+import org.usfirst.frc.team811.robot.commands.auto_double_scale;
 import org.usfirst.frc.team811.robot.commands.auto_drive_left_switch;
 import org.usfirst.frc.team811.robot.commands.auto_drive_right_switch;
 import org.usfirst.frc.team811.robot.commands.auto_drive_straight;
 import org.usfirst.frc.team811.robot.commands.auto_scale_comp;
 import org.usfirst.frc.team811.robot.commands.auto_scale_non_scale_side;
+import org.usfirst.frc.team811.robot.commands.auto_single_scale_single_switch;
+import org.usfirst.frc.team811.robot.commands.auto_triple_switch_left;
+import org.usfirst.frc.team811.robot.commands.auto_triple_switch_right;
 import org.usfirst.frc.team811.robot.subsystems.Drive;
 import org.usfirst.frc.team811.robot.subsystems.FieldData;
 import org.usfirst.frc.team811.robot.subsystems.FourBar;
@@ -77,30 +81,47 @@ public class Robot extends TimedRobot implements Constants {
 			// Do nothing
 		}
 		if (RobotMap.autoSelect.switchValue() == 1) {
+			Robot.intake.open();
 			motionProfile.generateDriveStraightTrajectory();
 		}
 		if (RobotMap.autoSelect.switchValue() == 2) {
+			Robot.intake.close();
 			motionProfile.generateLeftSwitchTrajectory();
 			motionProfile.generateRightSwitchTrajectory();
 		}
 
 		if (RobotMap.autoSelect.switchValue() == 3) { // Left Side
+			Robot.intake.open();
 			motionProfile.generateScaleLeftTrajectory();
 			motionProfile.generateApproachScaleTrajectory();
 		}
 		if (RobotMap.autoSelect.switchValue() == 4) { // Right Side
+			Robot.intake.open();
 			motionProfile.generateScaleRightTrajectory();
 			motionProfile.generateApproachScaleTrajectory();
 		}
-		if (RobotMap.autoSelect.switchValue() == 5) { // Right Side
+		if (RobotMap.autoSelect.switchValue() == 5) { 
+			Robot.intake.close();
 			motionProfile.generateLeftSwitchTrajectory();
 			motionProfile.generateRightSwitchTrajectory();
-			motionProfile.generateSwitchApproach();
 			motionProfile.generateLowCubePickupTrajectory();
 			motionProfile.generateHighCubePickupTrajectory();
 		}
-
-		Robot.intake.open();
+		if (RobotMap.autoSelect.switchValue() == 6) { // Left Side
+			Robot.intake.open();
+			motionProfile.generateScaleLeftTrajectory();
+			motionProfile.generateApproachScaleTrajectory();
+			motionProfile.generatePickupCubeScaleLeftTrajectory();
+			motionProfile.generateSwitchApproach();
+		}
+		if (RobotMap.autoSelect.switchValue() == 7) { // Right Side
+			Robot.intake.open();
+			motionProfile.generateScaleRightTrajectory();
+			motionProfile.generateApproachScaleTrajectory();
+			motionProfile.generatePickupCubeScaleRightTrajectory();
+			motionProfile.generateSwitchApproach();
+		}
+		
 
 	}
 
@@ -169,23 +190,55 @@ public class Robot extends TimedRobot implements Constants {
 
 		if (RobotMap.autoSelect.switchValue() == 3) { // Left Side
 			if (scaleSide == -1) {
-				m_autonomousCommand = new auto_scale_comp();
+				m_autonomousCommand = new auto_scale_comp(true);
 				m_autonomousCommand.start();
 			} else {
-				m_autonomousCommand = new auto_scale_non_scale_side();
+				m_autonomousCommand = new auto_scale_non_scale_side(true);
 				m_autonomousCommand.start();
 			}
 		}
 		if (RobotMap.autoSelect.switchValue() == 4) { // Right Side
 			if (scaleSide == -1) {
-				m_autonomousCommand = new auto_scale_non_scale_side();
+				m_autonomousCommand = new auto_scale_non_scale_side(false);
 				m_autonomousCommand.start();
 			} else {
-				m_autonomousCommand = new auto_scale_comp();
+				m_autonomousCommand = new auto_scale_comp(false);
 				m_autonomousCommand.start();
 			}
 		}
-
+		if (RobotMap.autoSelect.switchValue() == 5) {
+			if (switchSide == -1) {
+				m_autonomousCommand = new auto_triple_switch_left();
+				m_autonomousCommand.start();
+			} else {
+				m_autonomousCommand = new auto_triple_switch_right();
+				m_autonomousCommand.start();
+			}
+		}
+		if (RobotMap.autoSelect.switchValue() == 6) { // Left Side
+			if (scaleSide == -1 && switchSide == -1) {
+				m_autonomousCommand = new auto_single_scale_single_switch(true);
+				m_autonomousCommand.start();
+			} else if(scaleSide == -1){
+				m_autonomousCommand = new auto_double_scale(true);
+				m_autonomousCommand.start();
+			}else {
+				m_autonomousCommand = new auto_scale_non_scale_side(true);
+				m_autonomousCommand.start();
+			}
+		}
+		if (RobotMap.autoSelect.switchValue() == 7) { // Right Side
+			if (scaleSide == 1 && switchSide == 1) {
+				m_autonomousCommand = new auto_single_scale_single_switch(false);
+				m_autonomousCommand.start();
+			} else if(scaleSide == 1){
+				m_autonomousCommand = new auto_double_scale(false);
+				m_autonomousCommand.start();
+			}else {
+				m_autonomousCommand = new auto_scale_non_scale_side(false);
+				m_autonomousCommand.start();
+			}
+		}
 	}
 
 	/**
@@ -221,6 +274,8 @@ public class Robot extends TimedRobot implements Constants {
 		SmartDashboard.putNumber("Right Drive", RobotMap.drivefrontright.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("Gyro", RobotMap.ahrs.getYaw());
 		SmartDashboard.putNumber("Rotary Switch", RobotMap.autoSelect.switchValue());
+		double setpointAngle = SmartDashboard.getNumber("PID Setpoint", 0);
+		motionProfile.setPostion(setpointAngle);
 		fourBar.encoderValue();
 		fourBar.desiredSetPointValue();
 

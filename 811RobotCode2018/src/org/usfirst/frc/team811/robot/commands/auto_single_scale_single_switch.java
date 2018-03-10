@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class auto_single_scale_single_switch extends CommandGroup {
 
-	public auto_single_scale_single_switch(boolean leftSide) {
+	public auto_single_scale_single_switch(boolean LeftSide) {
 		// Add Commands here:
 		// e.g. addSequential(new Command1());
 		// addSequential(new Command2());
@@ -27,7 +27,7 @@ public class auto_single_scale_single_switch extends CommandGroup {
 
 		addSequential(new Intake_close());
 		addSequential(new wait(0.5));
-		addSequential(new auto_drive_scale());
+		addSequential(new auto_drive_scale(LeftSide));
 		addSequential(new fourbar_high_scale());
 		addSequential(new wait(2));
 		addSequential(new auto_drive_approach_scale());
@@ -36,7 +36,7 @@ public class auto_single_scale_single_switch extends CommandGroup {
 		addSequential(new fourbar_down());
 		addSequential(new wait(2));
 		addSequential(new auto_rotate(180));
-		addSequential(new auto_drive_scale_cube_pickup());
+		addSequential(new auto_drive_scale_cube_pickup(LeftSide));
 		addParallel(new Intake_open());
 		addSequential(new Intake_close());
 		addSequential(new wait(1));

@@ -17,7 +17,7 @@ public class auto_drive_approach_reverse_scale extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		Robot.motionProfile.configureFollower1();
+		Robot.motionProfile.configureFollower(9);
 	}
 
 	// Called repeatedly when this Command is scheduled to run

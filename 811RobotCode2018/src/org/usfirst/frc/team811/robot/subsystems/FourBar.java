@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutput {
 
-	private double MAX_SPEED = 0.5;
+	private double MAX_SPEED = 0.65;
 
 	// PIDSource begin implementation
 	PIDSourceType type = PIDSourceType.kDisplacement;
@@ -53,7 +53,7 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 
 	private double kP = 0.0004;
 	private double kI = 0.00;
-	private double kD = 0.0002;
+	private double kD = 0.0004;
 	private double kF = 0.00; // look this up
 	private double kTolerancePx = 100;
 	private double kParkPosition = 0.0;
@@ -98,7 +98,7 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 		isParking = true;
 		fourBarController = new PIDController(kP, kI, kD, this /* as PIDSource */, this /* as PIDOutput */);
 
-		fourBarController.setOutputRange(-0.25, 0.25);
+		fourBarController.setOutputRange(-0.45, 0.45);
 		fourBarController.setAbsoluteTolerance(kTolerancePx);
 		fourBarController.setContinuous(false);
 		fourBarController.setSetpoint(0.0);
@@ -120,8 +120,8 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 		// command needs to be between -1 and 1
 		if (motorCommand > MAX_SPEED) {
 			motorCommand = MAX_SPEED;
-		} else if (motorCommand < -MAX_SPEED) {
-			motorCommand = -MAX_SPEED;
+		} else if (motorCommand < 0) {
+			motorCommand = 0;
 		}
 
 		SmartDashboard.putNumber("motorCommand", motorCommand);
@@ -159,6 +159,10 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 	public void pidWrite(double output) {
 		SmartDashboard.putNumber("pid output", output);
 
+		if(output <= -1 * getHoldingCommand()) {
+			output = -1 * getHoldingCommand();
+		}
+
 		// Take the output of the PID loop and add the offset to hold position
 		double command = output + getHoldingCommand();
 
@@ -169,6 +173,7 @@ public class FourBar extends Subsystem implements Constants, PIDSource, PIDOutpu
 			command = 0;
 			isParked = true;
 		}
+		
 
 		
 

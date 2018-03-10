@@ -13,6 +13,7 @@ public class fourbar_low_scale extends Command {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
 		requires(Robot.fourBar);
+    	requires(Robot.intake);
     }
 
     // Called just before this Command runs the first time

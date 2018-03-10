@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class auto_scale_non_scale_side extends CommandGroup {
 
-    public auto_scale_non_scale_side() {
+    public auto_scale_non_scale_side(boolean LeftSide) {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -27,6 +27,6 @@ public class auto_scale_non_scale_side extends CommandGroup {
     	
     	addSequential(new Intake_close());
 		addSequential(new wait(0.5));
-		addSequential(new auto_drive_scale());
+		addSequential(new auto_drive_scale(LeftSide));
     }
 }

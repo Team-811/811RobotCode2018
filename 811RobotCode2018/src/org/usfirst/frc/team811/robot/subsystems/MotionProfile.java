@@ -35,7 +35,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 	private PIDController rotateController;
 
-	private double MAX_SPEED = 0.7;
+	private double MAX_SPEED = 0.5;
 
 	/* The following PID Controller coefficients will need to be tuned */
 	/* to match the dynamics of your drive system. Note that the */
@@ -43,22 +43,31 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 	/* controllers by displaying a form where you can enter new P, I, */
 	/* and D constants and test the mechanism. */
 
-	private static double rotateKP = 0.003;
+	private static double rotateKP = 0.03;
 	private static double rotateKI = 0.00;
-	private static double rotateKD = 0.001;
-	private static double rotateKTolerance = 100.0;
+	private static double rotateKD = 0.01;
+	private static double rotateKTolerance = 1;
 
 	EncoderFollower leftFollower;
 	EncoderFollower rightFollower;
 	TankModifier modifier;
-	TankModifier modifierLeft;
-	TankModifier modifierRight;
-	TankModifier modifier1;
+	TankModifier modifierStraight;
+	TankModifier modifierLeftSwitch;
+	TankModifier modifierRightSwitch;
+	TankModifier modifierSwitchApproach;
+	TankModifier modifierSwitchLowCube;
+	TankModifier modifierSwitchHighCube;
+	TankModifier modifierScaleLeft;
+	TankModifier modifierScaleRight;
+	TankModifier modifierScaleApproach;
+	TankModifier modifierScaleCubeLeft;
+	TankModifier modifierScaleCubeRight;
+	
 
 	double l;
 	double r;
 
-	static double max_velocity = 0.45;
+	static double max_velocity = 0.7;
 	static double max_acceleration = 0.5;
 	static double max_jerk = 60.0;
 	static double wheel_diameter = 0.15;
@@ -144,46 +153,43 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 	// Path Finder
 
-	public void configureFollower(int Side) {
 
-		if (Side == -1) {
-			modifier = modifierLeft;
-		} else {
-			modifier = modifierRight;
+	public void configureFollower(int modifierNumber) {
+
+		if(modifierNumber == 1) {
+			modifier = modifierStraight;
 		}
-
-		ahrs.reset();
-
-		leftFollower = new EncoderFollower(modifier.getLeftTrajectory());
-		rightFollower = new EncoderFollower(modifier.getRightTrajectory());
-
-		leftEncoderStartingPosition = frontleft.getSelectedSensorPosition(0);
-		rightEncoderStartingPosition = frontright.getSelectedSensorPosition(0);
-		leftFollower.configureEncoder(leftEncoderStartingPosition, encoder_rotation, wheel_diameter);
-		rightFollower.configureEncoder(rightEncoderStartingPosition, encoder_rotation, wheel_diameter);
-		leftFollower.configurePIDVA(kP, 0.0, kD, 1 / absolute_max_velocity, acceleration_gain);
-		rightFollower.configurePIDVA(kP, 0.0, kD, 1 / absolute_max_velocity, acceleration_gain);
-
-	}
-
-	public void configureFollower1() {
-
-		ahrs.reset();
-
-		leftFollower = new EncoderFollower(modifier1.getLeftTrajectory());
-		rightFollower = new EncoderFollower(modifier1.getRightTrajectory());
-
-		leftEncoderStartingPosition = frontleft.getSelectedSensorPosition(0);
-		rightEncoderStartingPosition = frontright.getSelectedSensorPosition(0);
-		leftFollower.configureEncoder(leftEncoderStartingPosition, encoder_rotation, wheel_diameter);
-		rightFollower.configureEncoder(rightEncoderStartingPosition, encoder_rotation, wheel_diameter);
-		leftFollower.configurePIDVA(kP, 0.0, kD, 1 / absolute_max_velocity, acceleration_gain);
-		rightFollower.configurePIDVA(kP, 0.0, kD, 1 / absolute_max_velocity, acceleration_gain);
-
-	}
-
-	public void configureFollower() {
-
+		else if(modifierNumber == 2) {
+			modifier = modifierLeftSwitch;
+		}
+		else if(modifierNumber == 3) {
+			modifier = modifierRightSwitch;
+		}
+		else if(modifierNumber == 4) {
+			modifier = modifierSwitchApproach;
+		}
+		else if(modifierNumber == 5){
+			modifier = modifierSwitchLowCube;
+		}
+		else if(modifierNumber == 6){
+			modifier = modifierSwitchHighCube;
+		}
+		else if(modifierNumber == 7){
+			modifier = modifierScaleLeft;
+		}
+		else if(modifierNumber == 8){
+			modifier = modifierScaleRight;
+		}
+		else if(modifierNumber == 9){
+			modifier = modifierScaleApproach;
+		}
+		else if(modifierNumber == 10){
+			modifier = modifierScaleCubeLeft;
+		}
+		else if(modifierNumber == 11){
+			modifier = modifierScaleCubeRight;
+		}
+		
 		ahrs.reset();
 
 		leftFollower = new EncoderFollower(modifier.getLeftTrajectory());
@@ -301,7 +307,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5.5, 0 * yDirectionCorrection, 0) };
 
-		modifier = generateTrajectory(points, "straight");
+		modifierStraight = generateTrajectory(points, "straight");
 	}
 
 	public void generateLeftSwitchTrajectory() {
@@ -310,7 +316,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 				// new Waypoint(1.3, 1.37 * yDirectionCorrection, Pathfinder.d2r(50)),
 				new Waypoint(2.77, 1.44272 * yDirectionCorrection, 0) };
 
-		modifierLeft = generateTrajectory(points, "left switch");
+		modifierLeftSwitch = generateTrajectory(points, "left switch");
 	}
 
 	public void generateRightSwitchTrajectory() {
@@ -318,36 +324,36 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
 				new Waypoint(2.74, -1.30048 * yDirectionCorrection, 0) };
 
-		modifierRight = generateTrajectory(points, "right switch");
+		modifierRightSwitch = generateTrajectory(points, "right switch");
 	}
 
 	public void generateSwitchApproach() {
 
 		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(0.4, 0 * yDirectionCorrection, 0) };
 
-		generateTrajectory(points, "switch approach");
+		modifierSwitchApproach = generateTrajectory(points, "switch approach");
 	}
 
-	public void generateLeftSwitchWithIntake() {
-		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
-				new Waypoint(2.4352, 1.44272 * yDirectionCorrection, 0) };
-
-		generateTrajectory(points, "left cube pickup");
-	}
-
-	public void generateRightSwitchWithIntake() {
-		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
-				new Waypoint(2.4352, -1.30048 * yDirectionCorrection, 0) };
-
-		generateTrajectory(points, "left cube pickup");
-	}
+//	public void generateLeftSwitchWithIntake() {
+//		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
+//				new Waypoint(2.4352, 1.44272 * yDirectionCorrection, 0) };
+//
+//		generateTrajectory(points, "left cube pickup");
+//	}
+//
+//	public void generateRightSwitchWithIntake() {
+//		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
+//				new Waypoint(2.4352, -1.30048 * yDirectionCorrection, 0) };
+//
+//		generateTrajectory(points, "left cube pickup");
+//	}
 
 	public void generateLowCubePickupTrajectory() {
 
 		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
 				new Waypoint(1.524, 0.127 * yDirectionCorrection, 0) };
 
-		generateTrajectory(points, "cube pickup");
+		modifierSwitchLowCube = generateTrajectory(points, "low cube pickup");
 	}
 
 	public void generateHighCubePickupTrajectory() {
@@ -355,7 +361,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
 				new Waypoint(1.8542, 0.127 * yDirectionCorrection, 0) };
 
-		generateTrajectory(points, "cube pickup");
+		modifierSwitchLowCube = generateTrajectory(points, "high cube pickup");
 	}
 
 	public void generateScaleLeftTrajectory() {
@@ -363,7 +369,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
 				new Waypoint(5.371338, -0.5 * yDirectionCorrection, Pathfinder.d2r(-12)) };
 
-		modifier = generateTrajectory(points, "scale");
+		modifierScaleLeft = generateTrajectory(points, "left scale");
 	}
 
 	public void generateScaleRightTrajectory() {
@@ -371,7 +377,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
 				new Waypoint(5.371338, 0.5 * yDirectionCorrection, Pathfinder.d2r(12)) };
 
-		modifier = generateTrajectory(points, "scale");
+		modifierScaleRight = generateTrajectory(points, "right scale");
 	}
 
 	public void generateApproachScaleTrajectory() {
@@ -382,7 +388,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
 				new Waypoint(1.30302, 0 * yDirectionCorrection, 0) };
 
-		modifier1 = generateTrajectory(points, "approach");
+		modifierScaleApproach = generateTrajectory(points, "scale approach");
 
 		max_velocity = current_max;
 
@@ -393,7 +399,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
 				new Waypoint(1.4, 0.64516 * yDirectionCorrection, 0) };
 
-		modifier1 = generateTrajectory(points, "approach");
+		modifierScaleCubeLeft = generateTrajectory(points, "left scale cube pickup");
 
 	}
 
@@ -402,7 +408,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
 				new Waypoint(1.4, -0.64516 * yDirectionCorrection, 0) };
 
-		modifier1 = generateTrajectory(points, "approach");
+		modifierScaleCubeRight = generateTrajectory(points, "right scale cube pickup");
 
 	}
 

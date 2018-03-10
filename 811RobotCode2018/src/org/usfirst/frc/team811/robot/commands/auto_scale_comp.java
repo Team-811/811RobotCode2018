@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class auto_scale_comp extends CommandGroup {
 
-	public auto_scale_comp() {
+	public auto_scale_comp(boolean LeftSide) {
 		// Add Commands here:
 		// e.g. addSequential(new Command1());
 		// addSequential(new Command2());
@@ -27,11 +27,12 @@ public class auto_scale_comp extends CommandGroup {
 
 		addSequential(new Intake_close());
 		addSequential(new wait(0.5));
-		addSequential(new auto_drive_scale());
+		addSequential(new auto_drive_scale(LeftSide));
 		addSequential(new fourbar_high_scale());
 		addSequential(new wait(4));
 		addSequential(new auto_drive_approach_scale());
 		addSequential(new Intake_open());
+		addSequential(new wait(1));
 		addSequential(new auto_drive_approach_reverse_scale());
 		addSequential(new fourbar_down());
 
