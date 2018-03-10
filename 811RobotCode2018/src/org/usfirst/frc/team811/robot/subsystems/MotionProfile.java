@@ -35,7 +35,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 	private PIDController rotateController;
 
-	private double MAX_SPEED = 0.5;
+	private double MAX_SPEED = 0.7;
 
 	/* The following PID Controller coefficients will need to be tuned */
 	/* to match the dynamics of your drive system. Note that the */
@@ -308,45 +308,60 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
 				// new Waypoint(1.3, 1.37 * yDirectionCorrection, Pathfinder.d2r(50)),
-				new Waypoint(3, 2.66 * yDirectionCorrection, 0) };
+				new Waypoint(2.77, 1.44272 * yDirectionCorrection, 0) };
 
 		modifierLeft = generateTrajectory(points, "left switch");
 	}
 
 	public void generateRightSwitchTrajectory() {
 
-		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(2.74, 0 * yDirectionCorrection, 0) };
+		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
+				new Waypoint(2.74, -1.30048 * yDirectionCorrection, 0) };
 
 		modifierRight = generateTrajectory(points, "right switch");
 	}
 
-	/*
-	 * public void generateRightSwitchToCubePickupTrajectory() {
-	 * 
-	 * Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0
-	 * * yDirectionCorrection, 0) };
-	 * 
-	 * generateTrajectory(points, modifier, "right cub pickup"); }
-	 * 
-	 * public void generateLeftSwitchToCubePickupTrajectory() { Waypoint[] points =
-	 * new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0 *
-	 * yDirectionCorrection, 0) };
-	 * 
-	 * generateTrajectory(points, modifier, "left cube pickup"); }
-	 * 
-	 * public void generateCubePickupTrajectory() {
-	 * 
-	 * Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(5, 0
-	 * * yDirectionCorrection, 0) };
-	 * 
-	 * generateTrajectory(points, modifier, "cube pickup"); }
-	 */
+	public void generateSwitchApproach() {
 
-	// TODO
+		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(0.4, 0 * yDirectionCorrection, 0) };
+
+		generateTrajectory(points, "switch approach");
+	}
+
+	public void generateLeftSwitchWithIntake() {
+		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
+				new Waypoint(2.4352, 1.44272 * yDirectionCorrection, 0) };
+
+		generateTrajectory(points, "left cube pickup");
+	}
+
+	public void generateRightSwitchWithIntake() {
+		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
+				new Waypoint(2.4352, -1.30048 * yDirectionCorrection, 0) };
+
+		generateTrajectory(points, "left cube pickup");
+	}
+
+	public void generateLowCubePickupTrajectory() {
+
+		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
+				new Waypoint(1.524, 0.127 * yDirectionCorrection, 0) };
+
+		generateTrajectory(points, "cube pickup");
+	}
+
+	public void generateHighCubePickupTrajectory() {
+
+		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
+				new Waypoint(1.8542, 0.127 * yDirectionCorrection, 0) };
+
+		generateTrajectory(points, "cube pickup");
+	}
+
 	public void generateScaleLeftTrajectory() {
 
 		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
-				new Waypoint(6.631, 0 * yDirectionCorrection, Pathfinder.d2r(-35)) };
+				new Waypoint(5.371338, -0.5 * yDirectionCorrection, Pathfinder.d2r(-12)) };
 
 		modifier = generateTrajectory(points, "scale");
 	}
@@ -354,7 +369,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 	public void generateScaleRightTrajectory() {
 
 		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
-				new Waypoint(6.631, 0 * yDirectionCorrection, Pathfinder.d2r(35)) };
+				new Waypoint(5.371338, 0.5 * yDirectionCorrection, Pathfinder.d2r(12)) };
 
 		modifier = generateTrajectory(points, "scale");
 	}
@@ -364,11 +379,30 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 		double current_max = max_velocity;
 		max_velocity = 0.25;
 
-		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(2.05, 0 * yDirectionCorrection, 0) };
+		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
+				new Waypoint(1.30302, 0 * yDirectionCorrection, 0) };
 
 		modifier1 = generateTrajectory(points, "approach");
 
 		max_velocity = current_max;
+
+	}
+
+	public void generatePickupCubeScaleLeftTrajectory() {
+
+		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
+				new Waypoint(1.4, 0.64516 * yDirectionCorrection, 0) };
+
+		modifier1 = generateTrajectory(points, "approach");
+
+	}
+
+	public void generatePickupCubeScaleRightTrajectory() {
+
+		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
+				new Waypoint(1.4, -0.64516 * yDirectionCorrection, 0) };
+
+		modifier1 = generateTrajectory(points, "approach");
 
 	}
 

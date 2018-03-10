@@ -92,6 +92,13 @@ public class Robot extends TimedRobot implements Constants {
 			motionProfile.generateScaleRightTrajectory();
 			motionProfile.generateApproachScaleTrajectory();
 		}
+		if (RobotMap.autoSelect.switchValue() == 5) { // Right Side
+			motionProfile.generateLeftSwitchTrajectory();
+			motionProfile.generateRightSwitchTrajectory();
+			motionProfile.generateSwitchApproach();
+			motionProfile.generateLowCubePickupTrajectory();
+			motionProfile.generateHighCubePickupTrajectory();
+		}
 
 		Robot.intake.open();
 
