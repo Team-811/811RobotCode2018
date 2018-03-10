@@ -22,7 +22,7 @@ public class fourbar_switch extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.fourBar.setPostion(3200);
+    	Robot.fourBar.setPostion(3300);
     	Robot.intake.close();
     }
 

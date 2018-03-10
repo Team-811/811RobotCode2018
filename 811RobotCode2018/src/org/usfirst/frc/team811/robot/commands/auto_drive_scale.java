@@ -25,7 +25,7 @@ public class auto_drive_scale extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.motionProfile.configureFollower(modifierNumber);
+    	Robot.motionProfile.configureFollower(modifierNumber, false);
     }
 
     // Called repeatedly when this Command is scheduled to run

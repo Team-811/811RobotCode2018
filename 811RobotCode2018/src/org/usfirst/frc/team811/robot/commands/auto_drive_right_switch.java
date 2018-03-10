@@ -17,7 +17,7 @@ public class auto_drive_right_switch extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		Robot.motionProfile.configureFollower(3);
+		Robot.motionProfile.configureFollower(3, false);
 	}
 
 	// Called repeatedly when this Command is scheduled to run

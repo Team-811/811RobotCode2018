@@ -28,24 +28,24 @@ public class auto_triple_switch_left extends CommandGroup {
 		addSequential(new auto_drive_left_switch());
 		addSequential(new wait(0.5));
 		addSequential(new auto_drive_left_switch_reverse());
-		addSequential(new auto_drive_switch_cube_pickup_low());
 		addParallel(new Intake_open());
+		addSequential(new auto_drive_switch_cube_pickup_low());
 		addSequential(new Intake_close());
 		addSequential(new wait(0.5));
 		addSequential(new auto_drive_switch_cube_pickup_low_reverse());
+		addParallel(new wait_fourbar_switch());
 		addSequential(new auto_drive_left_switch());
-		addParallel(new fourbar_switch());
 		addSequential(new Intake_open());
-		addSequential(new auto_drive_left_switch_reverse());
-		addParallel(new fourbar_middle_cube());
-		addSequential(new auto_drive_switch_cube_pickup_high());
-		addParallel(new Intake_open());
-		addSequential(new Intake_close());
-		addSequential(new wait(0.5));
-		addSequential(new auto_drive_switch_cube_pickup_high_reverse());
-		addSequential(new auto_drive_left_switch());
-		addParallel(new fourbar_switch());
-		addSequential(new Intake_open());
+//		addParallel(new wait_fourbar_middle_cube());
+//		addSequential(new auto_drive_left_switch_reverse());
+//		addParallel(new Intake_open());
+//		addSequential(new auto_drive_switch_cube_pickup_high());
+//		addSequential(new Intake_close());
+//		addSequential(new wait(0.5));
+//		addSequential(new auto_drive_switch_cube_pickup_high_reverse());
+//		addParallel(new wait_fourbar_switch());
+//		addSequential(new auto_drive_left_switch());
+//		addSequential(new Intake_open());
 
 	}
 }

@@ -105,7 +105,7 @@ public class Robot extends TimedRobot implements Constants {
 			motionProfile.generateLeftSwitchTrajectory();
 			motionProfile.generateRightSwitchTrajectory();
 			motionProfile.generateLowCubePickupTrajectory();
-			motionProfile.generateHighCubePickupTrajectory();
+			//motionProfile.generateHighCubePickupTrajectory();
 		}
 		if (RobotMap.autoSelect.switchValue() == 6) { // Left Side
 			Robot.intake.open();
@@ -275,7 +275,7 @@ public class Robot extends TimedRobot implements Constants {
 		SmartDashboard.putNumber("Gyro", RobotMap.ahrs.getYaw());
 		SmartDashboard.putNumber("Rotary Switch", RobotMap.autoSelect.switchValue());
 		double setpointAngle = SmartDashboard.getNumber("PID Setpoint", 0);
-		motionProfile.setPostion(setpointAngle);
+		//motionProfile.setPostion(setpointAngle);
 		fourBar.encoderValue();
 		fourBar.desiredSetPointValue();
 

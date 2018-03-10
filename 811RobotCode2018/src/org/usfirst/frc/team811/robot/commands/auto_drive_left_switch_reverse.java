@@ -17,7 +17,7 @@ public class auto_drive_left_switch_reverse extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.motionProfile.configureFollower(2);
+    	Robot.motionProfile.configureFollower(2, true);
     }
 
     // Called repeatedly when this Command is scheduled to run

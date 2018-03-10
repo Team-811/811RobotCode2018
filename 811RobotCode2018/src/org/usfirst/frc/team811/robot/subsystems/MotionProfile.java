@@ -35,7 +35,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 	private PIDController rotateController;
 
-	private double MAX_SPEED = 0.5;
+	private double MAX_SPEED = 0.45;
 
 	/* The following PID Controller coefficients will need to be tuned */
 	/* to match the dynamics of your drive system. Note that the */
@@ -67,7 +67,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 	double l;
 	double r;
 
-	static double max_velocity = 0.7;
+	static double max_velocity = 0.55;
 	static double max_acceleration = 0.5;
 	static double max_jerk = 60.0;
 	static double wheel_diameter = 0.15;
@@ -154,7 +154,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 	// Path Finder
 
 
-	public void configureFollower(int modifierNumber) {
+	public void configureFollower(int modifierNumber, boolean reverse) {
 
 		if(modifierNumber == 1) {
 			modifier = modifierStraight;
@@ -191,10 +191,14 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 		}
 		
 		ahrs.reset();
-
+		if(!reverse) {
 		leftFollower = new EncoderFollower(modifier.getLeftTrajectory());
 		rightFollower = new EncoderFollower(modifier.getRightTrajectory());
-
+		}
+		else {
+			leftFollower = new EncoderFollower(modifier.getRightTrajectory());
+			rightFollower = new EncoderFollower(modifier.getLeftTrajectory());	
+		}
 		leftEncoderStartingPosition = frontleft.getSelectedSensorPosition(0);
 		rightEncoderStartingPosition = frontright.getSelectedSensorPosition(0);
 		leftFollower.configureEncoder(leftEncoderStartingPosition, encoder_rotation, wheel_diameter);
@@ -206,10 +210,21 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 	public void followTrajectory(boolean reverse) {
 
-		int leftEncoderPosition = leftEncoderStartingPosition
+		int leftEncoderPosition;
+		int rightEncoderPosition;
+		
+//		if(!reverse) {
+		leftEncoderPosition = leftEncoderStartingPosition
 				+ Math.abs(leftEncoderStartingPosition - frontleft.getSelectedSensorPosition(0));
-		int rightEncoderPosition = rightEncoderStartingPosition
+		rightEncoderPosition = rightEncoderStartingPosition
 				+ Math.abs(rightEncoderStartingPosition - frontright.getSelectedSensorPosition(0));
+//		}else {
+//
+//			leftEncoderPosition = rightEncoderStartingPosition
+//					+ Math.abs(rightEncoderStartingPosition - frontright.getSelectedSensorPosition(0));
+//			rightEncoderPosition = leftEncoderStartingPosition
+//					+ Math.abs(leftEncoderStartingPosition - frontleft.getSelectedSensorPosition(0));
+//		}
 
 		l = leftFollower.calculate(leftEncoderPosition);
 		r = rightFollower.calculate(rightEncoderPosition);
@@ -220,13 +235,13 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 		double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
 		double turn = gyro_correction_power * (-1.0 / 80.0) * angleDifference;
 
-		if (reverse) {
+		if (!reverse) {
 			driveTrain.tankDrive(l + turn, r - turn);
 		} else {
-			driveTrain.tankDrive(-r + turn, -l - turn);
+			driveTrain.tankDrive(-l + turn, -r - turn);
 		}
 
-		// driveTrain.tankDrive((l * changeDirection), (r * changeDirection) );
+		//driveTrain.tankDrive((l * changeDirection), (r * changeDirection) );
 
 	}
 
@@ -314,7 +329,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 
 		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
 				// new Waypoint(1.3, 1.37 * yDirectionCorrection, Pathfinder.d2r(50)),
-				new Waypoint(2.77, 1.44272 * yDirectionCorrection, 0) };
+				new Waypoint(2.78, 1.54272 * yDirectionCorrection, 0) };
 
 		modifierLeftSwitch = generateTrajectory(points, "left switch");
 	}
@@ -322,7 +337,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 	public void generateRightSwitchTrajectory() {
 
 		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
-				new Waypoint(2.74, -1.30048 * yDirectionCorrection, 0) };
+				new Waypoint(2.78, -1.40048 * yDirectionCorrection, 0) };
 
 		modifierRightSwitch = generateTrajectory(points, "right switch");
 	}
@@ -351,7 +366,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 	public void generateLowCubePickupTrajectory() {
 
 		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
-				new Waypoint(1.524, 0.127 * yDirectionCorrection, 0) };
+				new Waypoint(1.3, 0.112 * yDirectionCorrection, 0) };
 
 		modifierSwitchLowCube = generateTrajectory(points, "low cube pickup");
 	}
@@ -359,7 +374,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 	public void generateHighCubePickupTrajectory() {
 
 		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
-				new Waypoint(1.8542, 0.127 * yDirectionCorrection, 0) };
+				new Waypoint(1.6542, 0.127 * yDirectionCorrection, 0) };
 
 		modifierSwitchLowCube = generateTrajectory(points, "high cube pickup");
 	}

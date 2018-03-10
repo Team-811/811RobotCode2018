@@ -16,7 +16,7 @@ public class auto_drive_switch_cube_pickup_high_reverse extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.motionProfile.configureFollower(6);
+    	Robot.motionProfile.configureFollower(6, true);
     }
 
     // Called repeatedly when this Command is scheduled to run
