@@ -78,7 +78,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 	static double acceleration_gain = 0.0;
 	// TODO
 	static double absolute_max_velocity = 3.612;
-	static double gyro_correction_power = 0.7;
+	static double gyro_correction_power = 0.85;
 	static double yDirectionCorrection = 0.9;
 
 	int leftEncoderStartingPosition;
