@@ -366,7 +366,7 @@ public class MotionProfile extends Subsystem implements Constants, PIDSource, PI
 	public void generateLowCubePickupTrajectory() {
 
 		Waypoint[] points = new Waypoint[] { new Waypoint(0, 0, 0),
-				new Waypoint(1.3, 0.112 * yDirectionCorrection, 0) };
+				new Waypoint(1.52, 0.112 * yDirectionCorrection, 0) };
 
 		modifierSwitchLowCube = generateTrajectory(points, "low cube pickup");
 	}

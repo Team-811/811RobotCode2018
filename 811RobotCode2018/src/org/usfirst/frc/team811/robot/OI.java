@@ -9,11 +9,11 @@ package org.usfirst.frc.team811.robot;
 
 import org.usfirst.frc.team811.robot.commands.Intake_close;
 import org.usfirst.frc.team811.robot.commands.Intake_open;
-import org.usfirst.frc.team811.robot.commands.fourbar_climb;
 import org.usfirst.frc.team811.robot.commands.fourbar_down;
+import org.usfirst.frc.team811.robot.commands.fourbar_high_scale;
+import org.usfirst.frc.team811.robot.commands.fourbar_low_scale;
 import org.usfirst.frc.team811.robot.commands.fourbar_switch;
 import org.usfirst.frc.team811.robot.commands.fourbar_test;
-import org.usfirst.frc.team811.robot.commands.fourbar_up;
 
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -41,13 +41,13 @@ public class OI implements Constants {
 		intake_open.whenPressed(new Intake_open());
 
 		fourbar_up = new JoystickButton(RobotMap.joystick2, FOURBAR_UP_BUTTON);
-		fourbar_up.whenPressed(new fourbar_up());
+		fourbar_up.whenPressed(new fourbar_low_scale());
 		fourbar_down = new JoystickButton(RobotMap.joystick2, FOURBAR_DOWN_BUTTON);
 		fourbar_down.whenPressed(new fourbar_down());
 		fourbar_switch = new JoystickButton(RobotMap.joystick2, FOURBAR_SWITCH_BUTTON);
 		fourbar_switch.whenPressed(new fourbar_switch());
 		fourbar_climb = new JoystickButton(RobotMap.joystick2, FOURBAR_CLIMB_BUTTON);
-		fourbar_climb.whenPressed(new fourbar_climb());
+		fourbar_climb.whenPressed(new fourbar_high_scale());
 
 		System.out.println("in OI()");
 
